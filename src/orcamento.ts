@@ -1,3 +1,4 @@
+
 interface pedidoServicotype {
     cliente: string;
     descricao: string;
@@ -5,11 +6,36 @@ interface pedidoServicotype {
     urgente: boolean;
 }
 
-function calcular(pedido: pedidoServicotype, precoHora: number) {
-    const valorBase = pedido.horasEstimadas * precoHora;
-    const taxaUrgencia = pedido.urgente ? valorBase * 0.3 : 0;
-    const valorTotal = valorBase + taxaUrgencia;
+function calcularOrcamento(pedido: pedidoServicotype): number {
+    const VALOR_HORA = 100; // R$ 100 por hora
+    const TAXA_URGENCIA = 1.5; // 50% de acréscimo se urgente
+    
+    let valor = pedido.horasEstimadas * VALOR_HORA;
+    
+    if (pedido.urgente) {
+        valor *= TAXA_URGENCIA;
+    }
+    
+    return valor;
+}
 
-    return total
+function criarPedido(cliente: string, descricao: string, horas: number, urgente: boolean): pedidoServicotype {
+    return {
+        cliente,
+        descricao,
+        horasEstimadas: horas,
+        urgente
     };
 }
+
+function exibirDetalhes(pedido: pedidoServicotype): string {
+    const valor = calcularOrcamento(pedido);
+    return `
+Cliente: ${pedido.cliente}
+Descrição: ${pedido.descricao}
+Horas Estimadas: ${pedido.horasEstimadas}h
+Urgente: ${pedido.urgente ? 'Sim' : 'Não'}
+Valor do Orçamento: R$ ${valor.toFixed(2)}
+    `;
+}
+
