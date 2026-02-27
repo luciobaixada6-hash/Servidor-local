@@ -1,4 +1,4 @@
-import { allowedNodeEnvironmentFlags } from "node:process";
+import { } from "node:process";
 
 interface servicotype {
     nome: string;
@@ -7,7 +7,7 @@ interface servicotype {
     MinimoDesconto: number;
     percentualDesconto: number;
 }
-let catalogoServicos: servicotype[] = [];
+export let catalogoServicos: servicotype[] = [];
 // adicionar um Servico novo
 export function adicionarServico(novoServico: servicotype) {
     if (!novoServico.nome || novoServico.precoHora <= 0) {

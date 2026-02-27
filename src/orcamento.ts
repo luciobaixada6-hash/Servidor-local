@@ -1,41 +1,66 @@
+import { catalogoServicos } from "./servico.js";
+import { type PedidoServicotype, type servicotype } from "./utils/type.js"
 
-interface pedidoServicotype {
-    cliente: string;
-    descricao: string;
-    horasEstimadas: number;
-    urgente: boolean;
-}
+const taxaUrgencia = 0.3
+const minimoDesconto: number = 100
+const percentualDesconto: number = 0.1
 
-function calcularOrcamento(pedido: pedidoServicotype): number {
-    const VALOR_HORA = 100; // R$ 100 por hora
-    const TAXA_URGENCIA = 1.5; // 50% de acréscimo se urgente
-    
-    let valor = pedido.horasEstimadas * VALOR_HORA;
-    
-    if (pedido.urgente) {
-        valor *= TAXA_URGENCIA;
+const servicosSelecionados: servicotype[] = [];
+
+
+// Função para selecionar serviços e Horário estimado
+
+export function selecionarServicos(nome: string ) {
+    for (let i = 0; i < catalogoServicos.length; i++) {
+        if (catalogoServicos[i]?.nome === nome) {
+            servicosSelecionados.push(catalogoServicos[i]!)
+            return true
+        }
+
     }
-    
-    return valor;
+    return false;
 }
 
-function criarPedido(cliente: string, descricao: string, horas: number, urgente: boolean): pedidoServicotype {
-    return {
-        cliente,
-        descricao,
-        horasEstimadas: horas,
-        urgente
-    };
+// funcao para calcular o orcamento
+
+export function calcularOrcamento(pedido: PedidoServicotype) {
+    let totalbruto: number = 0
+    let totalfinal: number = 0
+
+    servicosSelecionados.map((servico: servicotype) => {
+        let totalDoServico: number = servico.precoHora * pedido.horasEstimadas
+        totalbruto = totalbruto + totalDoServico
+    })
+
+    totalfinal = totalbruto
+
+    if (pedido.urgente) {
+        totalfinal = totalbruto + (totalbruto * taxaUrgencia)
+
+    }
+
+    if (totalbruto >= minimoDesconto) {
+        totalfinal = totalfinal - (totalbruto * percentualDesconto)
+    }
 }
 
-function exibirDetalhes(pedido: pedidoServicotype): string {
-    const valor = calcularOrcamento(pedido);
-    return `
-Cliente: ${pedido.cliente}
-Descrição: ${pedido.descricao}
-Horas Estimadas: ${pedido.horasEstimadas}h
-Urgente: ${pedido.urgente ? 'Sim' : 'Não'}
-Valor do Orçamento: R$ ${valor.toFixed(2)}
-    `;
-}
+// () => {} --- arrow function
+// function() {} --- função normal
+
+/*
+
+urgente: true
+taxaUrgencia: 0.3
+totalbruto: 100
+totalbruto: 100 * 0.3 = 30
+totalfinal = 100 + (100 * 0.3) = 130
+
+totalbruto: 100
+totalbruto apos urgencia: 150
+minimo desconto: 100
+percentual : 10%
+desconto sobre o total final: 150 - 15 = 15
+desconto sobre o total bruto: 150 * 0.1 = 10
+
+*/
 
