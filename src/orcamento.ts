@@ -1,16 +1,17 @@
 import { catalogoServicos } from "./servico.js";
-import { type PedidoServicotype, type servicotype } from "./utils/type.js"
+import { type PedidoServicotype, type PrestadorType, type servicotype } from "./utils/type.js"
 
 const taxaUrgencia = 0.3
 const minimoDesconto: number = 100
 const percentualDesconto: number = 0.1
 
 const servicosSelecionados: servicotype[] = [];
-
+const prestadoresDeServico: PrestadorType[] = [];
+const prestadoresSelecionados: PrestadorType[] = [];
 
 // Função para selecionar serviços e Horário estimado
 
-export function selecionarServicos(nome: string ) {
+export function selecionarServicos(nome: string) {
     for (let i = 0; i < catalogoServicos.length; i++) {
         if (catalogoServicos[i]?.nome === nome) {
             servicosSelecionados.push(catalogoServicos[i]!)
@@ -19,6 +20,24 @@ export function selecionarServicos(nome: string ) {
 
     }
     return false;
+}
+
+// Função para criar um prestador de serviço
+export function criarPrestadorDeServico(novoPrestador: PrestadorType) {
+    // verificar se o prestador já existe
+    prestadoresDeServico.map((prestadorExistente: PrestadorType) => {
+        if (prestadorExistente.nome === novoPrestador.nome) {
+            // se o prestador já existe, retornar uma mensagem de erro
+            return {
+                status: false,
+                message: "Já existe um prestador com esse nome.",
+                data: null
+            }
+        }
+    })
+    // se o prestador não existe, adicionamos o novo prestadores
+    prestadoresDeServico.push(novoPrestador)
+    return { status: true, message: "Prestador  de servicoadicionado com sucesso.", data: novoPrestador }
 }
 
 // funcao para calcular o orcamento
@@ -42,6 +61,7 @@ export function calcularOrcamento(pedido: PedidoServicotype) {
     if (totalbruto >= minimoDesconto) {
         totalfinal = totalfinal - (totalbruto * percentualDesconto)
     }
+    return totalfinal
 }
 
 // () => {} --- arrow function

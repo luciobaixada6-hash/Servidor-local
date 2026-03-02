@@ -73,11 +73,12 @@ app.post("/selecionar-servico", (req: Request, res: Response) => {
 
 // rota para calcular orçamento
  app.post("/calcular-orcamento", (req: Request, res: Response) => {    
-    const pedido = req.body
+    const {pedido} = req.body
     const calcularOrcamentoResponse = calcularOrcamento(pedido)
 
     res.json({
-        calcularOrcamentoResponse
+        message: "Orçamento calculado com sucesso",
+       orcamentoTotal : calcularOrcamentoResponse
     })
  })
 
