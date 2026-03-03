@@ -34,6 +34,9 @@ const prestador1 = new Prestador(
 
 console.log(prestador1)
 
+
+
+
 /*
 nome"Lúcio",
    precohora: 150,

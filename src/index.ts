@@ -1,6 +1,7 @@
 import express, { type Request, type Response } from "express";
 import { adicionarServico, apagarServico, listarServicos, obterServico } from "./servico.js";
-import { calcularOrcamento, selecionarServicos } from "./orcamento.js";
+import { calcularOrcamento, criarPrestadorDeServico, selecionarPrestadoresServicos, selecionarServicos } from "./orcamento.js";
+
 const app = express();
 
 app.use(express.json());
@@ -71,17 +72,34 @@ app.post("/selecionar-servico", (req: Request, res: Response) => {
     })
 })
 
+// rota para selecionar prestador de serviço
+app.post("/selecionar-prestador-de-servico", (req: Request, res: Response) => {
+    const { nomeDoPrestador } = req.body
+    const selecionarPrestadorDeServicoResponse = selecionarPrestadoresServicos(nomeDoPrestador as string)
+    res.json({
+        status:selecionarPrestadorDeServicoResponse,
+        message: "Prestador de serviço selecionado com sucesso."
+    })
+})
+
 // rota para calcular orçamento
- app.post("/calcular-orcamento", (req: Request, res: Response) => {    
-    const {pedido} = req.body
+app.post("/calcular-orcamento", (req: Request, res: Response) => {
+    const { pedido } = req.body
     const calcularOrcamentoResponse = calcularOrcamento(pedido)
 
     res.json({
         message: "Orçamento calculado com sucesso",
-       orcamentoTotal : calcularOrcamentoResponse
+        orcamentoTotal: calcularOrcamentoResponse
     })
- })
+})
 
-        app.listen(8080, () => {
+// rota para criar um prestador de serviço
+app.post("/criar-prestador-de-servico", (req: Request, res: Response) => {
+    const novoPrestador = req.body
+    const criarPrestadorDeServicoResponse = criarPrestadorDeServico(novoPrestador)
+    res.json(criarPrestadorDeServicoResponse)
+})
+
+app.listen(8080, () => {
     console.log("servidor rondando na porta 8080")
 })

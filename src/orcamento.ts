@@ -5,6 +5,7 @@ const taxaUrgencia = 0.3
 const minimoDesconto: number = 100
 const percentualDesconto: number = 0.1
 
+
 const servicosSelecionados: servicotype[] = [];
 const prestadoresDeServico: PrestadorType[] = [];
 const prestadoresSelecionados: PrestadorType[] = [];
@@ -21,6 +22,20 @@ export function selecionarServicos(nome: string) {
     }
     return false;
 }
+
+// funcao para criar um prestador de serviço
+export function selecionarPrestadoresServicos(nomeDoPrestador: string) {
+// ciclo for que percorre a lista de prestadores de serviço
+for (let i = 0; i < prestadoresDeServico.length; i++) { 
+// if que verifica se o item [i] do array eh igual ao nome recebido
+if (prestadoresDeServico[i]?.nome === nomeDoPrestador) {
+// se for igual, adicionamos o item [i] do array de prestadores selecionados push
+prestadoresSelecionados.push(prestadoresDeServico[i]!)
+// retornamos true 
+return true }
+// senao return false
+return false
+} }
 
 // Função para criar um prestador de serviço
 export function criarPrestadorDeServico(novoPrestador: PrestadorType) {
