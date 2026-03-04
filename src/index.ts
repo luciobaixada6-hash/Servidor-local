@@ -1,7 +1,8 @@
 import express, { type Request, type Response } from "express";
 import { adicionarServico, apagarServico, listarServicos, obterServico } from "./servico.js";
 import { calcularOrcamento, criarPrestadorDeServico, selecionarPrestadoresServicos, selecionarServicos } from "./orcamento.js";
-
+import { apagarPrestadorDeServico } from "./orcamento.js";
+import { editarPrestadorDeServico } from "./orcamento.js";
 const app = express();
 
 app.use(express.json());
@@ -82,6 +83,30 @@ app.post("/selecionar-prestador-de-servico", (req: Request, res: Response) => {
     })
 })
 
+// rota para criar um prestador de serviço
+app.post("/criar-prestador-de-servico", (req: Request, res: Response) => {
+    const novoPrestador = req.body
+    const criarPrestadorDeServicoResponse = criarPrestadorDeServico(novoPrestador)
+    res.json(criarPrestadorDeServicoResponse)
+})
+
+// rota para editar um prestador de serviço
+app.put("/editar-prestador-de-servico", (req: Request, res: Response) => {
+    const { nomeDoPrestador } = req.query
+    const novosDadosDoPrestador = req.body
+    const editarPrestadorDeServicoResponse = editarPrestadorDeServico(nomeDoPrestador as string, novosDadosDoPrestador)
+    res.json(editarPrestadorDeServicoResponse)
+})           
+
+// rota para apagar um prestador de serviço
+app.delete("/apagar-prestador-de-servico", (req: Request, res: Response) => {
+    const { nomeDoPrestador } = req.query 
+    const apagarPrestadorDeServicoResponse = apagarPrestadorDeServico(nomeDoPrestador as string)
+    res.json(apagarPrestadorDeServicoResponse)
+})
+
+
+
 // rota para calcular orçamento
 app.post("/calcular-orcamento", (req: Request, res: Response) => {
     const { pedido } = req.body
@@ -91,13 +116,6 @@ app.post("/calcular-orcamento", (req: Request, res: Response) => {
         message: "Orçamento calculado com sucesso",
         orcamentoTotal: calcularOrcamentoResponse
     })
-})
-
-// rota para criar um prestador de serviço
-app.post("/criar-prestador-de-servico", (req: Request, res: Response) => {
-    const novoPrestador = req.body
-    const criarPrestadorDeServicoResponse = criarPrestadorDeServico(novoPrestador)
-    res.json(criarPrestadorDeServicoResponse)
 })
 
 app.listen(8080, () => {
