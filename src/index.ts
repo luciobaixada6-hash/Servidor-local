@@ -99,7 +99,7 @@ app.put("/editar-prestador-de-servico", (req: Request, res: Response) => {
 })           
 
 // rota para apagar um prestador de serviço
-app.delete("/apagar-prestador-de-servico", (req: Request, res: Response) => {
+app.delete("/apagar-prestador-de-servico", (req: Request, res: Response) => { 
     const { nomeDoPrestador } = req.query 
     const apagarPrestadorDeServicoResponse = apagarPrestadorDeServico(nomeDoPrestador as string)
     res.json(apagarPrestadorDeServicoResponse)
