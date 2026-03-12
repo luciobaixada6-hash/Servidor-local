@@ -3,6 +3,9 @@ import { adicionarServico, apagarServico, listarServicos, obterServico } from ".
 import { calcularOrcamento, criarPrestadorDeServico, selecionarPrestadoresServicos, selecionarServicos } from "./orcamento.js";
 import { apagarPrestadorDeServico } from "./orcamento.js";
 import { editarPrestadorDeServico } from "./orcamento.js";
+import { createUser, getUserById, getUsers } from "./users.js";
+import { stat } from "node:fs";
+
 const app = express();
 
 app.use(express.json());
@@ -78,7 +81,7 @@ app.post("/selecionar-prestador-de-servico", (req: Request, res: Response) => {
     const { nomeDoPrestador } = req.body
     const selecionarPrestadorDeServicoResponse = selecionarPrestadoresServicos(nomeDoPrestador as string)
     res.json({
-        status:selecionarPrestadorDeServicoResponse,
+        status: selecionarPrestadorDeServicoResponse,
         message: "Prestador de serviço selecionado com sucesso."
     })
 })
@@ -96,15 +99,52 @@ app.put("/editar-prestador-de-servico", (req: Request, res: Response) => {
     const novosDadosDoPrestador = req.body
     const editarPrestadorDeServicoResponse = editarPrestadorDeServico(nomeDoPrestador as string, novosDadosDoPrestador)
     res.json(editarPrestadorDeServicoResponse)
-})           
+})
 
 // rota para apagar um prestador de serviço
-app.delete("/apagar-prestador-de-servico", (req: Request, res: Response) => { 
-    const { nomeDoPrestador } = req.query 
+app.delete("/apagar-prestador-de-servico", (req: Request, res: Response) => {
+    const { nomeDoPrestador } = req.query
     const apagarPrestadorDeServicoResponse = apagarPrestadorDeServico(nomeDoPrestador as string)
     res.json(apagarPrestadorDeServicoResponse)
 })
 
+// selecionar todos os utilizadores presentes na base de dados
+app.get("/get-users", async (req: Request, res: Response) => {
+    const getUsersResponse = await getUsers()
+    res.json(getUsersResponse);
+})
+
+// rota para obter um utilizador pelo id
+app.get("/get-user-by-id", async (req: Request, res: Response) => {
+    const { id } = req.query
+    if (id) {
+        const getUserByIdResponse = await getUserById(id as string)
+
+        if (!getUserByIdResponse) {
+
+
+            res.status(404).json({
+                status: "error",
+                message: "ID do utilizador é obrigatório.",
+                data: null
+            })
+        }
+
+
+        res.status(200).json({
+            status: "success",
+            message: "utilizador encontrado",
+            data: getUserByIdResponse
+
+        })
+    }
+})
+// rota para criar um utilizador
+app.post("/create-user", async (req: Request, res: Response) => {
+    const { id, nome, nome_identifica, data_nascimento, email, telefone, pais, localidade, password, enabled, created_at, update_at } = req.body    
+    const createUserResponse = await createUser(id, nome, nome_identifica, data_nascimento, email, telefone, pais, localidade, password, enabled, created_at, update_at)
+    res.json(createUserResponse)
+})
 
 
 // rota para calcular orçamento

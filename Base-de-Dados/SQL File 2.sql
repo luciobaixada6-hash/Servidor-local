@@ -106,7 +106,20 @@ ADD CONSTRAINT fk_servico_prestacao_servico
   FOREIGN KEY (id_pervico)
 REFERENCES tbl_servico(id);
 
+DROP TABLE table_prestadores_servico;
 
-
-
+CREATE TABLE IF NOT EXISTS `tbl_prestadores_servico` (
+	`id` INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT UNIQUE,
+	`designacao` VARCHAR(100) NOT NULL,
+	`subtotal` DOUBLE NOT NULL,
+	`horas_estimadas` INTEGER NOT NULL,
+	`id_prestador` VARCHAR(255) NOT NULL,
+	`id_servico` INTEGER NOT NULL,
+	`preco_hora` DOUBLE,
+	`estado` ENUM('pendente', 'em_progresso', 'cancelado', 'finalizado') NOT NULL,
+    `id_orcamento` INTEGER,
+	`enabled` BOOLEAN NOT NULL,
+	`created_at` DATETIME NOT NULL,
+	`update_at` DATETIME NOT NULL
+);
 
