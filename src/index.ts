@@ -5,6 +5,7 @@ import { apagarPrestadorDeServico } from "./orcamento.js";
 import { editarPrestadorDeServico } from "./orcamento.js";
 import { createUser, getUserById, getUsers } from "./users.js";
 import { stat } from "node:fs";
+import type { servicotype } from "./utils/type.js";
 
 const app = express();
 
@@ -157,7 +158,23 @@ app.post("/calcular-orcamento", (req: Request, res: Response) => {
         orcamentoTotal: calcularOrcamentoResponse
     })
 })
+ 
+// criar servico base dados
+app.post("/criar-servico", (req: Request, res: Response) => {
+    const novoServico = req.body
+    const criarServicoResponse = criarServico(novoServico)
+    res.json(criarServicoResponse)
+})
 
+function criarServico(novoServico: servicotype) {
+    return adicionarServico(novoServico);
+}
+
+// lista de serviços para base dados
+app.get("/listar-servicos-base-dados", (req: Request, res: Response) => {
+    const listarServicosResponse = listarServicos()
+    res.json(listarServicosResponse)
+})
 app.listen(8080, () => {
     console.log("servidor rondando na porta 8080")
 })

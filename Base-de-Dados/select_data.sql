@@ -21,4 +21,6 @@ SELECT *
 FROM tbl_utilizadores 
 WHERE tbl_utilizadores.id = "b266d177-6d6f-4faf-a428-cd45714b1cd6";
 
-SELECT * FROM tbl_prestador WHERE tbl_prestador.nif = "1335557"
+SELECT * FROM tbl_prestador WHERE tbl_prestador.nif = "1335557";
+
+SELECT * FROM tbl_utilizadores
