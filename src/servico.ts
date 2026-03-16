@@ -75,6 +75,6 @@ export function selecionarServicos(id: string, nome: string, nome_identifica: st
     return null
 }
 //lista de servico para base dados
-export function listarServicosBaseDados(): servicotype[] {  
+export function listarServicosBaseDados(): servicotype[] {
     return catalogoServicos;
 }
