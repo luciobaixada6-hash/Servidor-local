@@ -67,7 +67,7 @@ NOW()
 
 INSERT INTO tbl_utilizadores
 VALUES(
-"353d5352-71db-40b9-89d7-87a53c163a22",
+"353d5352-71db-40b9-89d7-87a53c163a",
 "Lúcio santos",
 "D1999",
 "2002-10-06"

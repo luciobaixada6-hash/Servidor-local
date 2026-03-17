@@ -1,4 +1,4 @@
-import { } from "node:process";
+import db from "./lib/db.js";
 
 interface servicotype {
     nome: string;
@@ -31,6 +31,7 @@ export function adicionarServico(novoServico: servicotype) {
 }
 
 
+
 // listar todos os serviços 
 export function listarServicos(): servicotype[] {
     //TODO: implementar a fetch de serviços
@@ -42,15 +43,15 @@ export function listarServicos(): servicotype[] {
 export function apagarServico(nome: string): boolean {
     //TODO:implementar delete de servico
 
-    const novoCatalogoTemp : servicotype[] = [];
+    const novoCatalogoTemp: servicotype[] = [];
 
     for (let i = 0; i < catalogoServicos.length; i++) {
-        if (catalogoServicos[i]?.nome && catalogoServicos[i]?.nome !== nome) {            
-            
+        if (catalogoServicos[i]?.nome && catalogoServicos[i]?.nome !== nome) {
+
             novoCatalogoTemp.push(catalogoServicos[i]!);
         }
     }
-   // devolve um novo catalogo sem o servico que foi apagado
+    // devolve um novo catalogo sem o servico que foi apagado
 
     catalogoServicos = novoCatalogoTemp
     return true;
@@ -65,16 +66,73 @@ export function obterServico(nome: string): servicotype | null {
     }
     return null
 }
-// cria funcao de base dados de servicos
-export function selecionarServicos(id: string, nome: string, nome_identifica: string, data_nascimento: string, email: string, telefone: string, pais: string, localidade: string, password: string, enabled: boolean, created_at: string, update_at: string): servicotype | null {
-    for (let i = 0; i < catalogoServicos.length; i++) {
-        if (catalogoServicos[i]?.nome === nome) {
-            return catalogoServicos[i]!
-        }
+
+// função para listar serviços da base de dados
+export async function listarServicosBaseDados() {
+    try {
+        const [rows] = await db.execute(
+            "SELECT id, nome, descricao, categoria, enabled, create_at, updated_at FROM table_servicos WHERE enabled = true"
+        );
+
+        return {
+            status: "success",
+            mensagem: "Serviços listados com sucesso.",
+            data: rows
+        };
+    } catch (error) {
+        console.error("Erro ao listar serviços:", error);
+        return {
+            status: "error",
+            mensagem: "Erro interno do servidor ao listar serviços.",
+            data: null
+        };
     }
-    return null
 }
-//lista de servico para base dados
-export function listarServicosBaseDados(): servicotype[] {
-    return catalogoServicos;
+
+// função para criar serviço na base de dados
+export async function criarServicos(
+    id: string,
+    nome: string,
+    descricao: string,
+    categoria: string,
+    enabled: boolean
+) {
+    try {
+        const [existingRows] = await db.execute(
+            "SELECT id FROM tbl_servicos WHERE nome = ?",
+            [nome]
+        );
+
+        if ((existingRows as any[]).length > 0) {
+            return {
+                status: "error",
+                mensagem: `Serviço \"${nome}\" já existe na base de dados.`,
+                data: null
+            };
+        }
+
+        const [result] = await db.execute(
+            "INSERT INTO tbl_servicos (nome, descricao, categoria, enabled, create_at, updated_at) VALUES (?, ?, ?, ?, NOW(), NOW())",
+            [nome, descricao, categoria, enabled]
+        );
+
+        return {
+            status: "success",
+            mensagem: "Serviço criado com sucesso na base de dados.",
+            data: {
+                id: (result as any).insertId,
+                nome,
+                descricao,
+                categoria,
+                enabled
+            }
+        };
+    } catch (error) {
+        console.error("Erro ao criar serviço:", error);
+        return {
+            status: "error",
+            mensagem: "Erro interno do servidor ao criar serviço.",
+            data: null
+        };
+    }
 }

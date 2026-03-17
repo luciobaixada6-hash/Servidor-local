@@ -1,12 +1,11 @@
 import express, { type Request, type Response } from "express";
-import { adicionarServico, apagarServico, listarServicos, obterServico } from "./servico.js";
+import { adicionarServico, apagarServico, listarServicos, obterServico, listarServicosBaseDados, criarServicos } from "./servico.js";
 import { calcularOrcamento, criarPrestadorDeServico, selecionarPrestadoresServicos, selecionarServicos } from "./orcamento.js";
 import { apagarPrestadorDeServico } from "./orcamento.js";
 import { editarPrestadorDeServico } from "./orcamento.js";
 import { createUser, getUserById, getUsers } from "./users.js";
-import { stat } from "node:fs";
+import { stat} from "node:fs";
 import type { servicotype } from "./utils/type.js";
-
 const app = express();
 
 app.use(express.json());
@@ -160,19 +159,31 @@ app.post("/calcular-orcamento", (req: Request, res: Response) => {
 })
  
 // criar servico base dados
-app.post("/criar-servico", (req: Request, res: Response) => {
-    const novoServico = req.body
-    const criarServicoResponse = criarServico(novoServico)
-    res.json(criarServicoResponse)
+app.post("/criar-servico", async (req: Request, res: Response) => {
+    const servico = req.body;
+    if (!servico) {
+        return res.status(400).json({
+            status: "error",
+            mensagem: "Campos obrigatórios em falta",
+            data: null
+        });
+    }
+
+    console.log("Dados recebidos:", servico);
+
+ const insertServicoResponse = await criarServicos(
+        servico.id,
+        servico.nome,
+        servico.descricao,
+        servico.categoria,
+        servico.enabled
+    );
+    res.json(insertServicoResponse);
 })
 
-function criarServico(novoServico: servicotype) {
-    return adicionarServico(novoServico);
-}
-
 // lista de serviços para base dados
-app.get("/listar-servicos-base-dados", (req: Request, res: Response) => {
-    const listarServicosResponse = listarServicos()
+app.get("/listar-servicos-base-dados", async (req: Request, res: Response) => {
+    const listarServicosResponse = await listarServicosBaseDados()
     res.json(listarServicosResponse)
 })
 app.listen(8080, () => {
