@@ -6,9 +6,9 @@ export interface PedidoServicotype {
 }
 
 export interface Alunostype {
-    nome:string;
-    endereço:string;
-    contato:string | null;
+    nome: string;
+    endereço: string;
+    contato: string | null;
 }
 
 
@@ -33,4 +33,12 @@ export interface PrestadorType {
 export interface PrestadorType {
     nome: string
     id: number
+}
+
+export interface servicoType {
+    id: string,
+    nome: string,
+    descricao: string,
+    categoria: string,
+    enabled: boolean
 }

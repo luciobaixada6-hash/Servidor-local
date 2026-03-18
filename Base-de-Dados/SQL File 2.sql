@@ -123,3 +123,6 @@ CREATE TABLE IF NOT EXISTS `tbl_prestadores_servico` (
 	`update_at` DATETIME NOT NULL
 );
 
+ALTER TABLE tbl_utilizadores
+DROP COLUMN ´password´,
+ADD COLUMN `password` VARCHAR(255) 

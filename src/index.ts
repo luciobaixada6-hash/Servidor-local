@@ -1,5 +1,5 @@
 import express, { type Request, type Response } from "express";
-import { adicionarServico, apagarServico, listarServicos, obterServico, listarServicosBaseDados, criarServicos } from "./servico.js";
+import { adicionarServico, apagarServico, listarServicos, obterServico, listarServicosBaseDados, criarServicos, updateService } from "./servico.js";
 import { calcularOrcamento, criarPrestadorDeServico, selecionarPrestadoresServicos, selecionarServicos } from "./orcamento.js";
 import { apagarPrestadorDeServico } from "./orcamento.js";
 import { editarPrestadorDeServico } from "./orcamento.js";
@@ -181,11 +181,74 @@ app.post("/criar-servico", async (req: Request, res: Response) => {
     res.json(insertServicoResponse);
 })
 
+
+
 // lista de serviços para base dados
 app.get("/listar-servicos-base-dados", async (req: Request, res: Response) => {
     const listarServicosResponse = await listarServicosBaseDados()
     res.json(listarServicosResponse)
 })
-app.listen(8080, () => {
-    console.log("servidor rondando na porta 8080")
+
+
+app.post("/create-service", async (req:Request, res: Response)=>{
+    const newService: servicotype = req.body
+
+    if (!newService) {
+        return res.status(400).json({
+            status: "Dados de servico invalidos",
+            data:null
+        })
+   
+console.log(newService) {
+ }}
+    
+
+
+    app.put("/update-service-by-id/:id", async (req:Request, res: Response) =>
+    const {id} = Req.params;
+
+    const updatService: ServiceDBType = req.body
+
+if (!id)
+return res.status(400).json({
+    status:"error",
+    message:" error ao atualizar servico",
+    data: null
 })
+return res.status(200).json({
+    status:"sucess",
+    message:"servico atualizado com sucesso",
+    data:updateServiceResponse
+})
+  }  )
+
+  app.delete("/delete-service-by-id/:id", async (req:Request, res: Response) => 
+const {id} = Req.params;
+
+  const deleteService: ServiceDBType = req.body
+if (!id)
+return res.status(400).json({
+    status:"error",
+    message:"ID obrigatório",
+    data: null
+});
+
+const deleteServiceResponse = await deleteService (id as string)
+if (!deleteServiceResponse)
+return res.status(400).json({
+    status:"error",
+    message:" error ao apagar servico",
+    data: null
+})
+return res.status(200).json({
+    status:"sucess",
+    message:"servico apagado com sucesso",
+    data:deleteServiceResponse
+} ))
+
+
+app.listen(8080, ) => {
+    console.log("servidor rondando na porta 8080")}
+
+
+ 

@@ -136,3 +136,96 @@ export async function criarServicos(
         };
     }
 }
+
+export async function addServicestoDB(newService: serviceDBType) {
+    console.log({ newService })
+
+    try {
+
+        const query = `INSERT INTO tbl_servicos VALUES (?,?,?,?,?,?,?,)`
+
+        const values = [
+            null,
+            newService.nome,
+            newService.descricao,
+            newService.categoria,
+            newService.enabled,
+            new Date(),
+            new Date()
+        ]
+
+        const rows = db.execute(query, values)
+
+        return rows
+    } catch (error) {
+        console.log(error);
+        return null;
+    }
+}
+
+export async function getServiceById(id:string) {
+    try{
+        const query = `SELECT * FROM tbl_servicos WHERE id = ?`
+
+        const value = [id]
+
+        const rows = await db.execute(query, value)
+
+        return array.isArray(rows) && rows.lenght > 0 ? rows[0] : null
+        
+    }catch (error) {
+        console.log(error);
+        retorn null
+    }
+}
+
+export async function  getALLService() {
+    try {
+        const query = `SELECT * FROM tbl_servicos`
+
+        const rows = awiat db.execute(query)
+
+        return Array.isArray(rows) && rows.lenght > 0 ? rows[0] : []
+
+    }catch (error) {
+        console.log(error);
+        return null
+    }
+}
+
+// upadate de dados
+export async function updateService(id: string, updateService: ServicoDBType) {
+    try{
+        const query = `UPDATE tbl_servico
+                       SET
+                       nome=?,
+                       descricao=?,
+                       categoria=?,
+                       enabled=?,
+                       updated_at=?
+
+                       WHERE
+                       id=?
+        ;`
+
+const values = [
+    updateService.nome,
+    updateService.descricao,
+    updateService.categoria,
+    updateService.enabled,
+    new Date (),
+    id
+]
+const rows = await db.execute()
+
+    }
+}
+
+
+
+
+
+
+
+
+
