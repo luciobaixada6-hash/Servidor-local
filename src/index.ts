@@ -1,11 +1,13 @@
 import express, { type Request, type Response } from "express";
-import { adicionarServico, apagarServico, listarServicos, obterServico, listarServicosBaseDados, criarServicos, updateService } from "./servico.js";
+import { adicionarServico, apagarServico, listarServicos, obterServico, listarServicosBaseDados, criarServicos, updateService, addServicestoDB, getServiceById, getALLService, deleteService } from "./servico.js";
 import { calcularOrcamento, criarPrestadorDeServico, selecionarPrestadoresServicos, selecionarServicos } from "./orcamento.js";
 import { apagarPrestadorDeServico } from "./orcamento.js";
 import { editarPrestadorDeServico } from "./orcamento.js";
 import { createUser, getUserById, getUsers } from "./users.js";
-import { stat} from "node:fs";
-import type { servicotype } from "./utils/type.js";
+import { stat } from "node:fs";
+import type { serviceDBType, servicotype } from "./utils/type.js";
+import { create } from "node:domain";
+import { generateUUID } from "./utils/uuid.js";
 const app = express();
 
 app.use(express.json());
@@ -141,7 +143,7 @@ app.get("/get-user-by-id", async (req: Request, res: Response) => {
 })
 // rota para criar um utilizador
 app.post("/create-user", async (req: Request, res: Response) => {
-    const { id, nome, nome_identifica, data_nascimento, email, telefone, pais, localidade, password, enabled, created_at, update_at } = req.body    
+    const { id, nome, nome_identifica, data_nascimento, email, telefone, pais, localidade, password, enabled, created_at, update_at } = req.body
     const createUserResponse = await createUser(id, nome, nome_identifica, data_nascimento, email, telefone, pais, localidade, password, enabled, created_at, update_at)
     res.json(createUserResponse)
 })
@@ -157,7 +159,7 @@ app.post("/calcular-orcamento", (req: Request, res: Response) => {
         orcamentoTotal: calcularOrcamentoResponse
     })
 })
- 
+
 // criar servico base dados
 app.post("/criar-servico", async (req: Request, res: Response) => {
     const servico = req.body;
@@ -171,7 +173,7 @@ app.post("/criar-servico", async (req: Request, res: Response) => {
 
     console.log("Dados recebidos:", servico);
 
- const insertServicoResponse = await criarServicos(
+    const insertServicoResponse = await criarServicos(
         servico.id,
         servico.nome,
         servico.descricao,
@@ -190,65 +192,139 @@ app.get("/listar-servicos-base-dados", async (req: Request, res: Response) => {
 })
 
 
-app.post("/create-service", async (req:Request, res: Response)=>{
-    const newService: servicotype = req.body
+app.post("/create-service", async (req: Request, res: Response) => {
+    const newService: serviceDBType = req.body;
 
     if (!newService) {
         return res.status(400).json({
-            status: "Dados de servico invalidos",
-            data:null
+            status: "error",
+            message: "Dados de servico invalidos",
+            data: null,
         })
-   
-console.log(newService) {
- }}
-    
+    }
 
+    console.log(newService);
 
-    app.put("/update-service-by-id/:id", async (req:Request, res: Response) =>
-    const {id} = Req.params;
+    const createServiceResponse = await addServicestoDB(newService);
 
-    const updatService: ServiceDBType = req.body
+    if (!createServiceResponse === null) {
+        return res.status(400).json({
+            status: "error",
+            message: "error ao criar servico",
+            data: null,
+        }
+        )
+    }
 
-if (!id)
-return res.status(400).json({
-    status:"error",
-    message:" error ao atualizar servico",
-    data: null
+    res.status(200).json({
+        status: "sucess",
+        message: "servico criado com sucesso",
+        data: createServiceResponse,
+    })
 })
-return res.status(200).json({
-    status:"sucess",
-    message:"servico atualizado com sucesso",
-    data:updateServiceResponse
+
+app.get("/get-service-by-id", async (req: Request, res: Response) => {
+    const { id } = req.params;
+
+    if (!id) {
+        res.status(400).json({
+            status: "error",
+            message: "ID obrigatorio",
+            data: null,
+        })
+    }
+
+    const getServiceByIdResponse = await getServiceById(id as string);
+
+    if (!getServiceByIdResponse) {
+        res.status(400).json({
+            status: "error",
+            message: "servico não encontrado",
+            data: null,
+        })
+    }
+
+    res.status(400).json({
+        status: "sucess",
+        message: "servico encontrado com sucesso",
+        data: getServiceByIdResponse,
+    })
+
 })
-  }  )
 
-  app.delete("/delete-service-by-id/:id", async (req:Request, res: Response) => 
-const {id} = Req.params;
+app.get("/get-all-services", async (require: Request, res: Response) => {
+    const getALLServiceResponse = await getALLService();
 
-  const deleteService: ServiceDBType = req.body
-if (!id)
-return res.status(400).json({
-    status:"error",
-    message:"ID obrigatório",
-    data: null
-});
+    if (!getALLServiceResponse) {
+        return res.status(400).json({
+            status: "error",
+            message: "erro ao selecionar servicos",
+            data: null,
+        })
+    }
+    res.status(200).json({
+        stutas: "sucess",
+        message: "servico encontrado",
+        data: getALLServiceResponse
+    });
 
-const deleteServiceResponse = await deleteService (id as string)
-if (!deleteServiceResponse)
-return res.status(400).json({
-    status:"error",
-    message:" error ao apagar servico",
-    data: null
 })
-return res.status(200).json({
-    status:"sucess",
-    message:"servico apagado com sucesso",
-    data:deleteServiceResponse
-} ))
 
 
-app.listen(8080, ) => {
-    console.log("servidor rondando na porta 8080")}
+
+app.put("/update-service-by-id/:id", async (req: Request, res: Response) => {
+    const { id } = req.params;
+
+    const updatService: serviceDBType = req.body
+
+    if (!id) {
+        return res.status(400).json({
+            status: "error",
+            message: " error ao atualizar servico",
+            data: null
+        })
+    }
+
+    const updateServiceResponse = await updateService(id as string, updatService)
+
+    return res.status(200).json({
+        status: "sucess",
+        message: "servico atualizado com sucesso",
+        data: updateServiceResponse
+    })
+})
+
+app.delete("/delete-service-by-id/:id", async (req: Request, res: Response) => {
+    const { id } = req.params;
 
 
- 
+    if (!id) {
+        return res.status(400).json({
+            status: "error",
+            message: "ID obrigatório",
+            data: null
+        });
+    }
+
+    const deleteServiceResponse = await deleteService(id as string)
+
+    if (!deleteServiceResponse) {
+        return res.status(400).json({
+            status: "error",
+            message: " error ao apagar servico",
+            data: null
+        })
+    }
+
+    return res.status(200).json({
+        status: "sucess",
+        message: "servico apagado com sucesso",
+        data: deleteServiceResponse
+    })
+})
+
+
+
+app.listen(8080, () => {
+    console.log("servidor rondando na porta 8080")
+})

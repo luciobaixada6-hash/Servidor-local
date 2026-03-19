@@ -35,10 +35,26 @@ export interface PrestadorType {
     id: number
 }
 
-export interface servicoType {
+export interface serviceDBType {
     id: string,
     nome: string,
     descricao: string,
     categoria: string,
     enabled: boolean
+}
+
+export interface UserType
+{
+    id: string, 
+    nome: string,
+    nome_identifica: string, 
+    data_nascimento: string, 
+    email: string, 
+    telefone: string, 
+    pais: string, 
+    localidade: string, 
+    password: string, 
+    enabled: boolean,
+    created_at: Date, 
+    update_at: Date
 }
