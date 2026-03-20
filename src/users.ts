@@ -2,6 +2,8 @@ import { create } from "node:domain";
 import db from "./lib/db.js"
 import { generateUUID } from "./utils/uuid.js";
 import type { UserType } from "./utils/type.js";
+import { hashPassword } from "./utils/password.js";
+import { formatDateDDMMYYYY } from "./utils/date.js";
 
 export async function getUsers() {
    const [rows] = await db.execute("SELECT * FROM tbl_utilizadores")
@@ -13,7 +15,7 @@ export async function getUserById(id: string) {
    const [rows] = await db.execute(
       `SELECT * FROM tbl_utilizadores
        WHERE  tbl_utilizadores.id = ?`,
-
+ 
       [id]
    )
 
@@ -29,7 +31,7 @@ export async function createUser(id: string, nome: string, nome_identifica: stri
    const [rows] = await db.execute(
 
       `INSERT INTO tbl_utilizadores (id, nome, nome_identifica, data_nascimento, email, telefone, pais, localidade, password, enabled, created_at, update_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-      [generateUUID(), nome, nome_identifica, data_nascimento, email, telefone, pais, localidade, password, enabled, new Date(), new Date()]
+      [generateUUID(), nome, nome_identifica, formatDateDDMMYYYY(data_nascimento), email, telefone, pais, localidade, await hashPassword(password), enabled, new Date(), new Date()]
    )
    return rows;
 }
