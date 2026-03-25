@@ -1,4 +1,4 @@
-import { serviceModel } from "../models/servico.model.js";
+import { serviceModel } from "../models/servico.models.js";
 import { deleteService, updateService } from "../servico.js";
 import type { serviceDBType } from "../utils/type.js"
 import type { Request, Response } from "express"

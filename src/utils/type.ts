@@ -21,18 +21,18 @@ export interface servicotype {
     percentualDesconto: number;
 }
 
-export interface PrestadorType {
-    nome: string
-    precoHora: number
-    profissao: string
-    minimoParaDesconto: number
-    percentagemDesconto: number
-    taxaUrgencia: number
-}
-
-export interface PrestadorType {
-    nome: string
-    id: number
+export interface PrestadorDBType {
+id: string,
+nif: string,
+precoHora: string,
+profissao: string,
+minimoDesconto: string,
+taxaUrgencia: string,
+percentagemDesconto: string ,
+disponivel: string ,
+enabled: string ,
+create_at: Date ,
+updated_at: Date
 }
 
 export interface serviceDBType {
@@ -43,18 +43,83 @@ export interface serviceDBType {
     enabled: boolean
 }
 
-export interface UserType
-{
-    id: string, 
+export interface propostaDBType {
+	id: string,
+	id_prestacao_servico: string,
+	preco_hora: number,
+	horas_estimadas: number,
+	estado: string,
+	enabled: boolean,
+	created_at: Date,
+	updated_at: Date
+,
+}
+
+
+export interface UserType {
+    id: string,
     nome: string,
-    nome_identifica: string, 
-    data_nascimento: string, 
-    email: string, 
-    telefone: string, 
-    pais: string, 
-    localidade: string, 
-    password: string, 
+    nome_identifica: string,
+    data_nascimento: string,
+    email: string,
+    telefone: string,
+    pais: string,
+    localidade: string,
+    password: string,
     enabled: boolean,
-    created_at: Date, 
+    created_at: Date,
     update_at: Date
 }
+
+export interface OrcamentoType {
+    id: number,
+    total: string,
+    id_utilizadores: string,
+    enabled: boolean,
+    created_at: Date,
+    updated_at: Date
+}
+
+export interface PropostaDBType {
+    id: string,
+    nif: string,
+    precoHora: string,
+    profissao: string,
+    minimoDesconto: string,
+    taxaUrgencia: string,
+    percentagemDesconto: string,
+    enabled: boolean,
+    create_at: Date,
+    update_at: Date
+}
+
+export interface OrcamentoDBType {
+    id: number,
+    total: string,
+    id_utilizadores: string,
+    enabled: boolean,
+    created_at: Date,
+    updated_at: Date
+}
+
+
+export interface PrestacaoServicoDBType {
+    id: string,
+    designacao: string,
+    subtotal: number,
+    horas_estimadas: number,
+    id_prestador: string,
+    id_servico: number,
+    preco_hora: number,
+    estado: string,
+    id_orcamento: number,
+    enabled: boolean,
+    created_at: Date,
+    update_at: Date
+
+}
+
+export interface PrestadorDBType {
+
+}
+
