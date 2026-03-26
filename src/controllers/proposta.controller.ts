@@ -1,12 +1,12 @@
 import type { Request, Response } from "express"
 import { PropostaModel } from "../models/proposta.models.js"
-import type { PropostaDBType } from "../utils/type.js"
+import type { propostaDBType } from "../utils/type.js"
 
 
 export const PropostaController = {
     async create(req: Request, res: Response) {
         try {
-            const propostaData = req.body as PropostaDBType
+            const propostaData = req.body as propostaDBType
             const propostaResponse = await PropostaModel.create(propostaData)
 
             if (!propostaResponse) return res.status(400).json({ message: "Erro ao criar proposta" })
@@ -48,7 +48,7 @@ export const PropostaController = {
     async update(req: Request, res: Response) {
         const { id } = req.params
         try {
-            const propostaData = req.body as PropostaDBType
+            const propostaData = req.body as propostaDBType
             const propostaResponse = await PropostaModel.update(id as string, propostaData)
 
             if (!propostaResponse) return res.status(400).json({ message: "Erro ao atualizar proposta" })

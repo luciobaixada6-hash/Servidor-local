@@ -1,10 +1,10 @@
 import type { Request, Response } from "express"
-import type { PrestacaoServicoDBType } from "../utils/type.js"
+import type { prestacaoServicoDBType } from "../utils/type.js"
 import { PrestacaoServicoModel } from "../models/prestacao-servico..models.js"
 
 export const PrestacaoServicoController = {
     async create(req: Request, res: Response) {
-        const prestacaoServico: PrestacaoServicoDBType = req.body
+        const prestacaoServico: prestacaoServicoDBType = req.body
 
         if (!prestacaoServico) {
             return res.status(400).json({
@@ -80,7 +80,7 @@ export const PrestacaoServicoController = {
     async update(req: Request, res: Response) {
         const { id } = req.params
 
-        const updatedPrestacaoServico: PrestacaoServicoDBType = req.body
+        const updatedPrestacaoServico: prestacaoServicoDBType = req.body
 
         if (!id) {
             return res.status(400).json({

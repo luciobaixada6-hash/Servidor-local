@@ -1,0 +1,44 @@
+
+componentes:
+schemas:
+#schema/servico.yaml
+servico:
+  type: object
+  properties:
+    id:
+      type: integer
+example: 1
+nome:
+type: string
+example: "servico sentinela"
+descricao:
+type: string
+example: "Servico de sentinela profissional para residência e trabalho"
+categoria:
+type: string
+example: "Limpeza"
+enabled:
+type: boolean
+example: true
+created_at:
+type: string
+example: "2022-01-01T00:00:00Z "
+updated_at:
+type: string
+example: "2022-01-01T00:00:00Z "
+
+# schema generico de resposta de erro
+ResponseError:
+type: object
+properties:
+message:
+type: string
+example: "Error ao buscar servicos"
+sttus:
+type: bolean
+example: false
+data:
+type: object
+properties:
+null
+

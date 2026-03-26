@@ -64,7 +64,7 @@ CREATE TABLE IF NOT EXISTS `table_orcamento` (
 );
 
 
-CREATE TABLE IF NOT EXISTS `table_prestadores_servico` (
+CREATE TABLE IF NOT EXISTS `table_prestacao_servico` (
 	`id` INTEGER NOT NULL AUTO_INCREMENT UNIQUE,
 	`designacao` VARCHAR(100) NOT NULL,
 	`subtotal` DOUBLE NOT NULL,

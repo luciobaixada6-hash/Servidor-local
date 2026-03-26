@@ -49,7 +49,7 @@ NOW(),
 NOW()
 );
 
-INSERT INTO tbl_prestadores_servico
+INSERT INTO tbl_prestacao_servico
 value (
 NULL,
 "formacao superior em contabilidade",

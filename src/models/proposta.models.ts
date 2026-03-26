@@ -65,14 +65,11 @@ export const PropostaModel = {
                 WHERE id = ?`,
 
                 [
-
                     proposta.id_prestacao_servico,
                     proposta.preco_hora,
                     proposta.horas_estimadas,
                     proposta.estado,
                     proposta.enabled,
-                    proposta.created_at,
-                    proposta.updated_at,
                     new Date(),
                     id
                 ]

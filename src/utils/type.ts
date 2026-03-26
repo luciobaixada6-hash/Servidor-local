@@ -22,17 +22,17 @@ export interface servicotype {
 }
 
 export interface PrestadorDBType {
-id: string,
-nif: string,
-precoHora: string,
-profissao: string,
-minimoDesconto: string,
-taxaUrgencia: string,
-percentagemDesconto: string ,
-disponivel: string ,
-enabled: string ,
-create_at: Date ,
-updated_at: Date
+    id: string,
+    nif: string,
+    precoHora: string,
+    profissao: string,
+    minimoDesconto: string,
+    taxaUrgencia: string,
+    percentagemDesconto: string,
+    disponivel: string,
+    enabled: string,
+    create_at: Date,
+    updated_at: Date
 }
 
 export interface serviceDBType {
@@ -44,15 +44,15 @@ export interface serviceDBType {
 }
 
 export interface propostaDBType {
-	id: string,
-	id_prestacao_servico: string,
-	preco_hora: number,
-	horas_estimadas: number,
-	estado: string,
-	enabled: boolean,
-	created_at: Date,
-	updated_at: Date
-,
+    id: string,
+    id_prestacao_servico: string,
+    preco_hora: number,
+    horas_estimadas: number,
+    estado: string,
+    enabled: boolean,
+    created_at: Date,
+    updated_at: Date
+    ,
 }
 
 
@@ -103,23 +103,33 @@ export interface OrcamentoDBType {
 }
 
 
-export interface PrestacaoServicoDBType {
+export interface processoType {
+    id: string;
+    titulo: string;
+    descricao: string;
+    estado: string;
+    id_utilizador: string;
+    id_prestador?: string;
+    id_servico: number;
+    id_orcamento?: number;
+    data_inicio: Date;
+    data_fim?: Date;
+    enabled: boolean;
+    created_at: Date;
+    updated_at: Date;
+}
+export interface prestacaoServicoDBType {
     id: string,
-    designacao: string,
+    designacao: string
+    id_orcamento: string,
     subtotal: number,
     horas_estimadas: number,
     id_prestador: string,
-    id_servico: number,
+    id_servico: string,
     preco_hora: number,
     estado: string,
-    id_orcamento: number,
     enabled: boolean,
     created_at: Date,
-    update_at: Date
-
-}
-
-export interface PrestadorDBType {
-
+    updated_at: Date
 }
 

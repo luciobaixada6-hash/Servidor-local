@@ -1,10 +1,10 @@
 import db from "../lib/db.js"
-import type { PrestacaoServicoDBType } from "../utils/type.js"
+import type { prestacaoServicoDBType } from "../utils/type.js"
 import { generateUUID } from "../utils/uuid.js"
 
 
 export const PrestacaoServicoModel = {
-    async create(prestacaoServico: PrestacaoServicoDBType) {
+    async create(prestacaoServico: prestacaoServicoDBType) {
         try {
             const [rows] = await db.execute(
                 `INSERT INTO tbl_prestacao_servico 
@@ -56,7 +56,7 @@ export const PrestacaoServicoModel = {
         }
     },
 
-    async update(id: string, prestacaoServico: PrestacaoServicoDBType) {
+    async update(id: string, prestacaoServico: prestacaoServicoDBType) {
         try {
             const [rows] = await db.execute(
                 `UPDATE tbl_prestacao_servico 

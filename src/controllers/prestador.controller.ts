@@ -1,51 +1,51 @@
 import type { Request, Response } from "express"
-import type { PrestacaoServicoDBType } from "../utils/type.js"
-import { PrestacaoServicoModel } from "../models/prestacao-servico..models.js"
+import type { PrestadorDBType } from "../utils/type.js"
+import { PrestadorModel } from "../models/prestador.models.js"
 
-export const PrestacaoServicoController = {
+export const PrestadorController = {
     async create(req: Request, res: Response) {
-        const prestacaoServico: PrestacaoServicoDBType = req.body
+        const prestador: PrestadorDBType = req.body
 
-        if (!prestacaoServico) {
+        if (!prestador) {
             return res.status(400).json({
                 status: "error",
-                message: "Dados de prestacao de servico invalidos",
+                message: "Dados de prestador inválidos",
                 data: null
             })
         }
 
-        const createPrestacaoServicoResponse = await PrestacaoServicoModel.create(prestacaoServico)
+        const createPrestadorResponse = await PrestadorModel.create(prestador)
 
-        if (!createPrestacaoServicoResponse) {
+        if (!createPrestadorResponse) {
             return res.status(500).json({
                 status: "error",
-                message: "Erro ao criar prestacao de servico",
+                message: "Erro ao criar prestador",
                 data: null
             })
         }
 
         return res.status(201).json({
             status: "success",
-            message: "Prestacao de servico criada com sucesso",
-            data: createPrestacaoServicoResponse
+            message: "Prestador criado com sucesso",
+            data: createPrestadorResponse
         })
     },
 
     async getAll(req: Request, res: Response) {
-        const getAllPrestacaoServicosResponse = await PrestacaoServicoModel.getAll()
+        const getAllPrestadoresResponse = await PrestadorModel.getAll()
 
-        if (!getAllPrestacaoServicosResponse) {
+        if (!getAllPrestadoresResponse) {
             return res.status(500).json({
                 status: "error",
-                message: "Erro ao buscar prestacoes de servico",
+                message: "Erro ao buscar prestadores",
                 data: null
             })
         }
 
         return res.status(200).json({
             status: "success",
-            message: "Prestacoes de servico buscadas com sucesso",
-            data: getAllPrestacaoServicosResponse
+            message: "Prestadores buscados com sucesso",
+            data: getAllPrestadoresResponse
         })
     },
 
@@ -55,63 +55,63 @@ export const PrestacaoServicoController = {
         if (!id) {
             return res.status(400).json({
                 status: "error",
-                message: "ID obrigatorio",
+                message: "ID obrigatório",
                 data: null
             })
         }
 
-        const getPrestacaoServicoByIdResponse = await PrestacaoServicoModel.get(id as string)
+        const getPrestadorByIdResponse = await PrestadorModel.get(id as string)
 
-        if (!getPrestacaoServicoByIdResponse) {
+        if (!getPrestadorByIdResponse) {
             return res.status(404).json({
                 status: "error",
-                message: "Prestacao de servico nao encontrada",
+                message: "Prestador não encontrado",
                 data: null
             })
         }
 
         return res.status(200).json({
             status: "success",
-            message: "Prestacao de servico encontrada com sucesso",
-            data: getPrestacaoServicoByIdResponse
+            message: "Prestador encontrado com sucesso",
+            data: getPrestadorByIdResponse
         })
     },
 
     async update(req: Request, res: Response) {
         const { id } = req.params
 
-        const updatedPrestacaoServico: PrestacaoServicoDBType = req.body
+        const updatedPrestador: PrestadorDBType = req.body
 
         if (!id) {
             return res.status(400).json({
                 status: "error",
-                message: "ID obrigatorio",
+                message: "ID obrigatório",
                 data: null
             })
         }
 
-        if (!updatedPrestacaoServico) {
+        if (!updatedPrestador) {
             return res.status(400).json({
                 status: "error",
-                message: "Dados de prestacao de servico invalidos",
+                message: "Dados de prestador inválidos",
                 data: null
             })
         }
 
-        const updatePrestacaoServicoResponse = await PrestacaoServicoModel.update(id as string, updatedPrestacaoServico)
+        const updatePrestadorResponse = await PrestadorModel.update(id as string, updatedPrestador)
 
-        if (!updatePrestacaoServicoResponse) {
-            return res.status(400).json({
+        if (!updatePrestadorResponse) {
+            return res.status(500).json({
                 status: "error",
-                message: "Erro ao atualizar prestacao de servico",
+                message: "Erro ao atualizar prestador",
                 data: null
             })
         }
 
         return res.status(200).json({
             status: "success",
-            message: "Prestacao de servico atualizada com sucesso",
-            data: updatePrestacaoServicoResponse
+            message: "Prestador atualizado com sucesso",
+            data: updatePrestadorResponse
         })
     },
 
@@ -121,25 +121,25 @@ export const PrestacaoServicoController = {
         if (!id) {
             return res.status(400).json({
                 status: "error",
-                message: "ID obrigatorio",
+                message: "ID obrigatório",
                 data: null
             })
         }
 
-        const deletePrestacaoServicoResponse = await PrestacaoServicoModel.delete(id as string)
+        const deletePrestadorResponse = await PrestadorModel.delete(id as string)
 
-        if (!deletePrestacaoServicoResponse) {
-            return res.status(400).json({
+        if (!deletePrestadorResponse) {
+            return res.status(500).json({
                 status: "error",
-                message: "Erro ao apagar prestacao de servico",
+                message: "Erro ao deletar prestador",
                 data: null
             })
         }
 
         return res.status(200).json({
             status: "success",
-            message: "Prestacao de servico apagada com sucesso",
-            data: deletePrestacaoServicoResponse
+            message: "Prestador deletado com sucesso",
+            data: null
         })
     }
 }
