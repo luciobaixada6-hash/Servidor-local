@@ -1,0 +1,127 @@
+components:
+  schemas:
+    # schema/users.yaml
+    User:
+      type: object
+      required:
+        -  id
+        - name
+        - email
+        - password
+        - enabled
+        - created_at
+        - update_at
+        - nome_identifica
+        - data_nascimento
+        - email
+        - telefone
+        - localidade
+        - password
+        - enabled
+        - created_at
+        - update_at
+
+      properties:
+        id:
+          type: string
+          example: "550e8400-e29b-41d4-a716-446655440000"
+          description: "Identificador único do usuário (UUID)"
+        name:
+          type: string
+          example: "João Silva"
+          description: "Nome completo do usuário"
+        email:
+          type: string
+          format: email
+          example: "joao.silva@email.com"
+          description: "Email único do usuário"
+
+    UserResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "550e8400-e29b-41d4-a716-446655440000"
+        name:
+          type: string
+          example: "João Silva"
+        email:
+          type: string
+          example: "joao.silva@email.com"
+
+    UserListResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/UserResponse'
+      example:
+        - id: "550e8400-e29b-41d4-a716-446655440000"
+          name: "João Silva"
+          email: "joao.silva@email.com"
+        - id: "550e8400-e29b-41d4-a716-446655440001"
+          name: "Maria Santos"
+          email: "maria.santos@email.com"
+        - id: "550e8400-e29b-41d4-a716-446655440002"
+          name: "Pedro Costa"
+          email: "pedro.costa@email.com"
+
+    UserCreateRequest:
+      type: object
+      required:
+        - id
+        - name
+        - email
+      properties:
+        id:
+          type: string
+          example: "550e8400-e29b-41d4-a716-446655440000"
+          description: "Identificador único do usuário"
+        name:
+          type: string
+          example: "João Silva"
+          description: "Nome completo do usuário"
+        email:
+          type: string
+          format: email
+          example: "joao.silva@email.com"
+          description: "Email do usuário (deve ser único)"
+
+    UserUpdateRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          example: "João Santos"
+          description: "Novo nome do usuário"
+        email:
+          type: string
+          format: email
+          example: "joao.santos@email.com"
+          description: "Novo email do usuário"
+
+    ResponseError:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "User not found"
+        status:
+          type: boolean
+          example: false
+      required:
+        - message
+        - status
+
+    ResponseSuccess:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "User created successfully"
+        status:
+          type: boolean
+          example: true
+        data:
+          $ref: '#/components/schemas/UserResponse'
+      required:
+        - message
+        - status

@@ -1,91 +1,91 @@
 paths:
-  /servico:
+  /prestacao-servico:
     get:
-      summary: Listar todos os servico
+      summary: Listar todos os prestacao-servico
       tags:
-        - Servico
-      description: Retorna uma lista de todos os servico disponiveis
+          - Prestacao-Servico
+      description: Retorna uma lista de todos os prestacao-servico disponiveis
       responses:
         "200":
-          description: Listar servico
+          description: Listar prestacao-servico
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/Servico"
+                  $ref: "#/components/schemas/prestacao-servico"
         "404":
-          description: Nenhum Servico encontrado
+          description: Nenhum prestacao-servico encontrado
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/ResponseError"
 
-  /servico/create:
+  /prestacao-servico/create:
     post:
-      summary: Criar um novo servico
+      summary: Criar um novo prestacao-servico
       tags:
-        - Servico
-      description: Cria um novo servico
+          - Prestacao-Servico
+      description: Cria um novo prestacao-servico
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/CreateServico"
+              $ref: "#/components/schemas/Createprestacao-servico"
       responses:
         "200":
-          description: Servico criado com sucesso
+          description: prestacao-servico criado com sucesso
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/ResponseSuccess"
         "400":
-          description: Erro ao criar servico
+          description: Erro ao criar prestacao-servico
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/ResponseError"
 
-  /servico/get-by-id/{id}:
+  /prestacao-servico/get-by-id/{id}:
     get:
-      summary: Buscar um servico por ID
+      summary: Buscar um prestacao-servico por ID
       tags:
-        - Servico
-      description: Retorna um servico especifico pelo ID
+        - Prestacao-Servico
+      description: Retorna um prestacao-servico especifico pelo ID
       parameters:
         - name: id
           in: path
           required: true
-          description: ID do servico
+          description: ID do prestacao-servico
           schema:
             type: integer
             example: 1
       responses:
         "200":
-          description: Servico encontrado
+          description: prestacao-servico encontrado
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/ResponseSuccess"
         "404":
-          description: Servico não encontrado
+          description: prestacao-servico não encontrado
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/ResponseError"
 
-  /servico/update/{id}:
+  /prestacao-servico/update/{id}:
     put:
-      summary: Atualizar um servico
+      summary: Atualizar um prestacao-servico
       tags:
-        - Servico
-      description: Atualiza um servico especifico pelo ID
+          - Prestacao-Servico
+      description: Atualiza um prestacao-servico especifico pelo ID
       parameters:
         - name: id
           in: path
           required: true
-          description: ID do servico a ser atualizado
+          description: ID do prestacao-servico a ser atualizado
           schema:
             type: integer
             example: 1
@@ -94,10 +94,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/CreateServico"
+              $ref: "#/components/schemas/Create-prestacao-servico"
       responses:
         "200":
-          description: Servico atualizado com sucesso
+          description: prestacao-servico atualizado com sucesso
           content:
             application/json:
               schema:
@@ -109,35 +109,35 @@ paths:
               schema:
                 $ref: "#/components/schemas/ResponseError"
         "404":
-          description: Servico não encontrado
+          description: prestacao-servico não encontrado
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/ResponseError"
 
-  /servico/delete/{id}:
+  /prestacao-servico/delete/{id}:
     delete:
-      summary: Apagar um servico
+      summary: Apagar um prestacao-servico
       tags:
-        - Servico
-      description: Apaga um servico especifico pelo ID
+        - Prestacao-Servico
+      description: Apaga um prestacao-servico especifico pelo ID
       parameters:
         - name: id
           in: path
           required: true
-          description: ID do servico a ser apagado
+          description: ID do prestacao-servico a ser apagado
           schema:
             type: integer
             example: 1
       responses:
         "200":
-          description: Servico deletado com sucesso
+          description: prestacao-servico deletado com sucesso
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/ResponseSuccess"
         "404":
-          description: Servico não encontrado
+          description: prestacao-servico não encontrado
           content:
             application/json:
               schema:

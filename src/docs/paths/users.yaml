@@ -1,91 +1,89 @@
 paths:
-  /servico:
+  /Users:
     get:
-      summary: Listar todos os servico
+      summary: Listar todos os Users
       tags:
-        - Servico
-      description: Retorna uma lista de todos os servico disponiveis
+        - Users
+      description: Retorna uma lista de todos os Users disponiveis
       responses:
         "200":
-          description: Listar servico
+          description: Listar Users
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/Servico"
+                  $ref: "#/components/schemas/Users"
         "404":
-          description: Nenhum Servico encontrado
+          description: Nenhum Users encontrado
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/ResponseError"
 
-  /servico/create:
+  /Users/create:
     post:
-      summary: Criar um novo servico
-      tags:
-        - Servico
-      description: Cria um novo servico
+      summary: Criar um novo Users
+      description: Cria um novo Users
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/CreateServico"
+              $ref: "#/components/schemas/CreateUsers"
       responses:
         "200":
-          description: Servico criado com sucesso
+          description: Users criado com sucesso
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/ResponseSuccess"
         "400":
-          description: Erro ao criar servico
+          description: Erro ao criar Users
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/ResponseError"
 
-  /servico/get-by-id/{id}:
+  /Users/get-by-id/{id}:
     get:
-      summary: Buscar um servico por ID
+      summary: Buscar um Users por ID
       tags:
-        - Servico
-      description: Retorna um servico especifico pelo ID
+        - Users
+      description: Retorna um Users especifico pelo ID
       parameters:
         - name: id
           in: path
           required: true
-          description: ID do servico
+          description: ID do Users
           schema:
             type: integer
             example: 1
       responses:
         "200":
-          description: Servico encontrado
+          description: Users encontrado
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/ResponseSuccess"
         "404":
-          description: Servico não encontrado
+          description: Users não encontrado
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/ResponseError"
 
-  /servico/update/{id}:
+  /Users/update/{id}:
     put:
-      summary: Atualizar um servico
+      summary: Atualizar um Users
       tags:
-        - Servico
-      description: Atualiza um servico especifico pelo ID
+        - Users
+      description: Atualiza um Users especifico pelo ID
       parameters:
         - name: id
           in: path
           required: true
-          description: ID do servico a ser atualizado
+          description: ID do Users a ser atualizado
           schema:
             type: integer
             example: 1
@@ -94,10 +92,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/CreateServico"
+              $ref: "#/components/schemas/CreateUsers"
       responses:
         "200":
-          description: Servico atualizado com sucesso
+          description: Users atualizado com sucesso
           content:
             application/json:
               schema:
@@ -109,35 +107,35 @@ paths:
               schema:
                 $ref: "#/components/schemas/ResponseError"
         "404":
-          description: Servico não encontrado
+          description: Users não encontrado
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/ResponseError"
 
-  /servico/delete/{id}:
+  /Users/delete/{id}:
     delete:
-      summary: Apagar um servico
+      summary: Apagar um Users
       tags:
-        - Servico
-      description: Apaga um servico especifico pelo ID
+        - Users
+      description: Apaga um Users especifico pelo ID
       parameters:
         - name: id
           in: path
           required: true
-          description: ID do servico a ser apagado
+          description: ID do Users a ser apagado
           schema:
             type: integer
             example: 1
       responses:
         "200":
-          description: Servico deletado com sucesso
+          description: Users deletado com sucesso
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/ResponseSuccess"
         "404":
-          description: Servico não encontrado
+          description: Users não encontrado
           content:
             application/json:
               schema:

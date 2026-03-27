@@ -1,91 +1,91 @@
 paths:
-  /servico:
+  /proposta:
     get:
-      summary: Listar todos os servico
+      summary: Listar todos os proposta
       tags:
-        - Servico
-      description: Retorna uma lista de todos os servico disponiveis
+        - Proposta
+      description: Retorna uma lista de todos os proposta disponiveis
       responses:
         "200":
-          description: Listar servico
+          description: Listar proposta
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/Servico"
+                  $ref: "#/components/schemas/Proposta"
         "404":
-          description: Nenhum Servico encontrado
+          description: Nenhum Proposta encontrado
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/ResponseError"
 
-  /servico/create:
+  /proposta/create:
     post:
-      summary: Criar um novo servico
+      summary: Criar um novo proposta
       tags:
-        - Servico
-      description: Cria um novo servico
+        - Proposta
+      description: Cria um novo proposta
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/CreateServico"
+              $ref: "#/components/schemas/CreateProposta"
       responses:
         "200":
-          description: Servico criado com sucesso
+          description: Proposta criado com sucesso
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/ResponseSuccess"
         "400":
-          description: Erro ao criar servico
+          description: Erro ao criar proposta
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/ResponseError"
 
-  /servico/get-by-id/{id}:
+  /proposta/get-by-id/{id}:
     get:
-      summary: Buscar um servico por ID
+      summary: Buscar um proposta por ID
       tags:
-        - Servico
-      description: Retorna um servico especifico pelo ID
+        - Proposta
+      description: Retorna um proposta especifico pelo ID
       parameters:
         - name: id
           in: path
           required: true
-          description: ID do servico
+          description: ID do proposta
           schema:
             type: integer
             example: 1
       responses:
         "200":
-          description: Servico encontrado
+          description: Proposta encontrado
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/ResponseSuccess"
         "404":
-          description: Servico não encontrado
+          description: Proposta não encontrado
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/ResponseError"
 
-  /servico/update/{id}:
+  /proposta/update/{id}:
     put:
-      summary: Atualizar um servico
+      summary: Atualizar um proposta
       tags:
-        - Servico
-      description: Atualiza um servico especifico pelo ID
+      - Proposta
+      description: Atualiza um proposta especifico pelo ID
       parameters:
         - name: id
           in: path
           required: true
-          description: ID do servico a ser atualizado
+          description: ID do proposta a ser atualizado
           schema:
             type: integer
             example: 1
@@ -94,10 +94,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/CreateServico"
+              $ref: "#/components/schemas/CreateProposta"
       responses:
         "200":
-          description: Servico atualizado com sucesso
+          description: Proposta atualizado com sucesso
           content:
             application/json:
               schema:
@@ -109,35 +109,35 @@ paths:
               schema:
                 $ref: "#/components/schemas/ResponseError"
         "404":
-          description: Servico não encontrado
+          description: Proposta não encontrado
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/ResponseError"
 
-  /servico/delete/{id}:
+  /proposta/delete/{id}:
     delete:
-      summary: Apagar um servico
+      summary: Apagar um proposta
       tags:
-        - Servico
-      description: Apaga um servico especifico pelo ID
+        - Proposta
+      description: Apaga um proposta especifico pelo ID
       parameters:
         - name: id
           in: path
           required: true
-          description: ID do servico a ser apagado
+          description: ID do proposta a ser apagado
           schema:
             type: integer
             example: 1
       responses:
         "200":
-          description: Servico deletado com sucesso
+          description: Proposta deletado com sucesso
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/ResponseSuccess"
         "404":
-          description: Servico não encontrado
+          description: Proposta não encontrado
           content:
             application/json:
               schema:
