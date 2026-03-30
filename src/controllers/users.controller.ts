@@ -40,6 +40,7 @@ export class UsersController {
         return res.status(201).json(user);
     }
 
+
     static update(req: Request, res: Response) {
         const { id } = req.params;
         const { name, email } = req.body;
@@ -64,3 +65,29 @@ export class UsersController {
         return res.status(204).send();
     }
 }
+
+
+
+
+
+
+async login (req: Request, res: Response) {
+    const { email, password } = req.body;   
+    if (!email || !password) {
+        return res.status(400).json({
+            status: "error",
+            message: "Email e senha são obrigatórios",
+            data: null
+        });
+    }
+
+const userData = await UserModel.getById(email as string);
+
+    if (!userData) {
+        return res.status(404).json({
+            status: "error",
+            message: "nao existe nenhuma conta com esse email",
+            data: null
+        });
+
+    }

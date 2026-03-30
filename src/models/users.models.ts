@@ -6,3 +6,7 @@ export type User = {
 };
 
 export const users: User[] = [];
+
+
+
+async getByEmail(email: string): Promise<User | null> {

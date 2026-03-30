@@ -1,0 +1,73 @@
+componentes:
+  schemas:
+    # schema/prestador.yaml
+    Prestador:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        nome:
+          type: string
+          example: "prestador sentinela"
+        descricao:
+          type: string
+          example: "Prestador de sentinela profissional para residência e trabalho"
+        categoria:
+          type: string
+          example: "Limpeza"
+        enabled:
+          type: boolean
+          example: true
+        created_at:
+          type: string
+          example: "2022-01-01T00:00:00Z "
+        updated_at:
+          type: string
+          example: "2022-01-01T00:00:00Z "
+
+    #schema para criar um novo prestador
+    CreatePrestador:
+      type: object
+      properties:
+        nome:
+          type: string
+          example: prestador sentinela 
+        descricao:
+          type: string
+          example: Prestador de sentinela profissional para residência e trabalho
+        categoria:
+          type: string
+          example: Limpeza
+        enabled:
+          type: boolean
+          example: true
+
+    # shema generico para sucesso
+    ResponseSuccess:
+    type: object
+    properties:
+      message:
+        type: string
+        example: "Prestadors encontrados com sucesso"
+      status:
+        type: bolean
+        example: true
+      data:
+        type: object
+        $ref: '#/components/schemas/Prestador'
+
+    # schema generico de resposta de erro
+    ResponseError:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Error ao buscar prestador"
+        status:
+          type: bolean
+          example: false
+        data:
+          type: object
+          properties:
+            null

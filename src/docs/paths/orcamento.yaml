@@ -1,3 +1,4 @@
+# paths/orcamento.yaml
 paths:
   /orcamento:
     get:
@@ -19,7 +20,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ResponseError"
+                $ref: "#/components/schemas/OrcamentoResponseError"
 
   /orcamento/create:
     post:
@@ -39,13 +40,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ResponseSuccess"
+                $ref: "#/components/schemas/OrcamentoResponseSuccess"
         "400":
           description: Erro ao criar orcamento
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ResponseError"
+                $ref: "#/components/schemas/OrcamentoResponseError"
 
   /orcamento/get-by-id/{id}:
     get:
@@ -67,19 +68,19 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ResponseSuccess"
+                $ref: "#/components/schemas/OrcamentoResponseSuccess"
         "404":
           description: Orcamento não encontrado
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ResponseError"
+                $ref: "#/components/schemas/OrcamentoResponseError"
 
   /orcamento/update/{id}:
     put:
       summary: Atualizar um orcamento
       tags:
-      - Orçamento 
+        - Orçamento 
       description: Atualiza um orcamento especifico pelo ID
       parameters:
         - name: id
@@ -101,25 +102,25 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ResponseSuccess"
+                $ref: "#/components/schemas/OrcamentoResponseSuccess"
         "400":
           description: Dados invalidos
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ResponseError"
+                $ref: "#/components/schemas/OrcamentoResponseError"
         "404":
           description: Orcamento não encontrado
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ResponseError"
+                $ref: "#/components/schemas/OrcamentoResponseError"
 
   /orcamento/delete/{id}:
     delete:
       summary: Apagar um orcamento
       tags:
-      - Orçamento
+        - Orçamento
       description: Apaga um orcamento especifico pelo ID
       parameters:
         - name: id
@@ -135,10 +136,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ResponseSuccess"
+                $ref: "#/components/schemas/OrcamentoResponseSuccess"
         "404":
           description: Orcamento não encontrado
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ResponseError"
+                $ref: "#/components/schemas/OrcamentoResponseError"
