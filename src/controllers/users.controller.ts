@@ -1,93 +1,179 @@
 import type { Request, Response } from "express"
+import type { UserDBType } from "../utils/type.js"
+import {createUser, getUserById, getUsers} from "../users.js"
+import { UserModel } from "../models/users.models.js"
+import { comparePassword} from "../utils/password.js"
+import jwt from "jsonwebtoken"
 
-type User = {
-    id: string;
-    name: string;
-    email: string;
-};
-
-const users: User[] = [];
-
-export class UsersController {
-    static getAll(req: Request, res: Response): Response {
-        return res.status(200).json(users);
-    }
-
-    static getOne(req: Request, res: Response): Response {
-        const { id } = req.params;
-        const user = users.find((u) => u.id === id);
+export const UserController = {
+    async create(req: Request, res: Response) {
+        const user: UserDBType = req.body
 
         if (!user) {
-            return res.status(404).json({ message: 'User not found' });
+            res.status(400).json({
+                status: "error",
+                message: "Dados de utilizador invalidos",
+                data: null
+            })
         }
 
-        return res.status(200).json(user);
-    }
+        console.log(user)
 
-    static create(req: Request, res: Response): Response {
-        const { id, name, email } = req.body;
-        if (!id || !name || !email) {
-            return res.status(400).json({ message: 'Invalid user data' });
+        const createUserResponse = await UserModel.create(user)
+
+        res.json(createUserResponse)
+    },
+
+    async getAll(req: Request, res: Response) {
+        const getAllUsersResponse = await UserModel.getAll() 
+
+        if (!getAllUsersResponse) {
+            return res.status(500).json({
+                status: "error",
+                message: "Erro ao buscar utilizadores",
+                data: null
+            })
         }
 
-        const exists = users.some((u) => u.id === id || u.email === email);
-        if (exists) {
-            return res.status(409).json({ message: 'User already exists' });
+        return res.status(200).json({
+            status: "success",
+            message: "Utilizadores buscados com sucesso",
+            data: getAllUsersResponse
+        })
+    },
+
+    async getById(req: Request, res: Response) {
+        const { id } = req.params
+
+        if (!id) {
+            return res.status(400).json({
+                status: "error",
+                message: "ID obrigatorio",
+                data: null
+            })
         }
 
-        const user: User = { id, name, email };
-        users.push(user);
-        return res.status(201).json(user);
-    }
 
 
-    static update(req: Request, res: Response) {
-        const { id } = req.params;
-        const { name, email } = req.body;
-        const userIndex = users.findIndex((u) => u.id === id);
+        const getUserByIdResponse = await UserModel.get(id as string)
 
-        if (userIndex < 0) {
-            return res.status(404).json({ message: 'User not found' });
+        if (!getUserByIdResponse) {
+            return res.status(404).json({
+                status: "error",
+                message: "Utilizador nao encontrado",
+                data: null
+            })
         }
 
+        return res.status(200).json({
+            status: "success",
+            message: "Utilizador encontrado com sucesso",
+            data: getUserByIdResponse
+        })
+    },
 
-    }
+    async login(req: Request, res: Response) {
+        const { email, password } = req.body
 
-    static delete(req: Request, res: Response): Response {
-        const { id } = req.params;
-        const userIndex = users.findIndex((u) => u.id === id);
-
-        if (userIndex < 0) {
-            return res.status(404).json({ message: 'User not found' });
+        if (!email || !password) {
+            return res.status(400).json({
+                status: "error",
+                message: "credenciais invalidas",
+                data: null,
+            })
         }
 
-        users.splice(userIndex, 1);
-        return res.status(204).send();
+        const userData = await UserModel.getByEmail(email as string)
+
+        if (!userData) {
+            return res.status(404).json({
+                status: "error",
+                message: "nao existe nenhum conta com este email",
+                data: null
+            })
+        }
+
+        const isPasswordValid = await comparePassword(password, userData.password)
+
+        if (!isPasswordValid) {
+            return res.status(401).json({
+                status: "error",
+                message: "Senha incorreta",
+                data: null
+            })
+        }
+
+        return res.status(200).json({
+            status: "success",
+            message: "Login realizado com sucesso",
+            data: null
+        }) 
+    },
+    
+
+    async update(req: Request, res: Response) {
+        const { id } = req.params
+
+        const updatedUser: UserDBType = req.body
+
+        if (!id) {
+            return res.status(400).json({
+                status: "error",
+                message: "ID obrigatorio",
+                data: null
+            })
+        }
+
+        if (!updatedUser) {
+            return res.status(400).json({
+                status: "error",
+                message: "Dados de utilizador invalidos",
+                data: null
+            })
+        }
+
+        const updateUserResponse = await UserModel.update(id as string, updatedUser)
+
+        if (!updateUserResponse) {
+            return res.status(400).json({
+                status: "error",
+                message: "Erro ao atualizar utilizador",
+                data: null
+            })
+        }
+
+        return res.status(200).json({
+            status: "success",
+            message: "Utilizador atualizado com sucesso",
+            data: updateUserResponse
+        })
+    },
+
+    async delete(req: Request, res: Response) {
+        const { id } = req.params
+
+        if (!id) {
+            return res.status(400).json({
+                status: "error",
+                message: "ID obrigatorio",
+                data: null
+            })
+        }
+
+        const deleteUserResponse = await UserModel.delete(id as string)
+
+        if (!deleteUserResponse) {
+            return res.status(400).json({
+                status: "error",
+                message: "Erro ao apagar utilizador",
+                data: null
+            })
+        }
+
+        return res.status(200).json({
+            status: "success",
+            message: "Utilizador apagado com sucesso",
+            data: deleteUserResponse
+        })
     }
 }
-
-
-
-
-
-
-async login (req: Request, res: Response) {
-    const { email, password } = req.body;   
-    if (!email || !password) {
-        return res.status(400).json({
-            status: "error",
-            message: "Email e senha são obrigatórios",
-            data: null
-        });
-    }
-
-const userData = await UserModel.getById(email as string);
-
-    if (!userData) {
-        return res.status(404).json({
-            status: "error",
-            message: "nao existe nenhuma conta com esse email",
-            data: null
-        });
-
-    }

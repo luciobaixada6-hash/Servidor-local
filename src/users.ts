@@ -1,7 +1,7 @@
 import { create } from "node:domain";
 import db from "./lib/db.js"
 import { generateUUID } from "./utils/uuid.js";
-import type { UserType } from "./utils/type.js";
+import type { UserDBType } from "./utils/type.js";
 import { hashPassword } from "./utils/password.js";
 import { formatDateDDMMYYYY } from "./utils/date.js";
 
@@ -14,8 +14,8 @@ export async function getUsers() {
 export async function getUserById(id: string) {
    const [rows] = await db.execute(
       `SELECT * FROM tbl_utilizadores
-       WHERE  tbl_utilizadores.id = ?`,
- 
+      WHERE  tbl_utilizadores.id = ?`,
+      
       [id]
    )
 
@@ -36,10 +36,10 @@ export async function createUser(id: string, nome: string, nome_identifica: stri
    return rows;
 }
 
-export async function updateUser(id: string, updatedUser: UserType) {
+export async function updateUser(id: string, updatedUser: UserDBType) {
    try {
       const query = `
-      UPDATE tbl_servicos
+      UPDATE tbl_utilizadores
          SET
       nome=?,
          nome_identifica=?,

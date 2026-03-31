@@ -5,5 +5,5 @@ export async function hashPassword(passwordEmTexto:string){
 return await hash(passwordEmTexto, 12)
 }
 export async function comparePassword(passwordEmTexto:string, passwordHash:string) {
-    return await hash(passwordEmTexto, passwordHash)
+    return await compare(passwordEmTexto, passwordHash)
 }

@@ -142,3 +142,35 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ResponseError"
+
+  /Users/login:
+    post:
+      summary: Login de um utilizador
+      tags:
+        - Users
+      description: Realizar o login de um utilizador
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginUsers"
+      responses:
+        "200":
+          description: "Login realizado com sucesso"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UsersResponseSuccess"
+        "400":
+          description: "Dados invalidos"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UsersResponseError"
+        "404":
+          description: "error ao logar utilizador"    
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UsersResponseError"

@@ -56,7 +56,7 @@ export interface propostaDBType {
 }
 
 
-export interface UserType {
+export interface UserDBType {
     id: string,
     nome: string,
     nome_identifica: string,
@@ -131,5 +131,16 @@ export interface prestacaoServicoDBType {
     enabled: boolean,
     created_at: Date,
     updated_at: Date
+}
+
+export interface prestadorType {
+    id: string,
+    taxaUrgencia: number,
+    nome: string,
+    precoHora: number,
+    profissao: string,
+    minimoDesconto: number,
+    percentagemDesconto: number,
+    disponivel: boolean
 }
 

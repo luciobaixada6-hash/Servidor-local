@@ -1,7 +1,7 @@
 components:
   schemas:
     # schema/users.yaml
-    User:
+    Users:
       type: object
       properties:
         id:
@@ -18,7 +18,7 @@ components:
           example: "joao.silva@email.com"
           description: "Email único do usuário"
 
-    UserResponse:
+    UsersResponse:
       type: object
       properties:
         id:
@@ -31,7 +31,7 @@ components:
           type: string
           example: "joao.silva@email.com"
 
-    UserCreateRequest:
+  UsersCreateRequest:
       type: object
       properties:
         id:
@@ -48,7 +48,21 @@ components:
           example: "joao.silva@email.com"
           description: "Email do usuário (deve ser único)"
 
-    UserResponseError:
+  LoginUsers:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+          example: "joao.silva@email.com"
+        password:
+          type: string
+          example: "password123"
+
+    
+
+
+  UserssResponseError:
       type: object
       properties:
         message:
@@ -61,7 +75,7 @@ components:
         - message
         - status
 
-    UserResponseSuccess:
+  UserssResponseSuccess:
       type: object
       properties:
         message:
