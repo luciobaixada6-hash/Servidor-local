@@ -31,7 +31,7 @@ components:
           type: string
           example: "joao.silva@email.com"
 
-  UsersCreateRequest:
+    UsersCreateRequest:
       type: object
       properties:
         id:
@@ -48,7 +48,7 @@ components:
           example: "joao.silva@email.com"
           description: "Email do usuário (deve ser único)"
 
-  LoginUsers:
+    LoginUsers:
       type: object
       properties:
         email:
@@ -59,10 +59,7 @@ components:
           type: string
           example: "password123"
 
-    
-
-
-  UserssResponseError:
+    UserssResponseError:
       type: object
       properties:
         message:
@@ -75,7 +72,7 @@ components:
         - message
         - status
 
-  UserssResponseSuccess:
+    UserssResponseSuccess:
       type: object
       properties:
         message:
