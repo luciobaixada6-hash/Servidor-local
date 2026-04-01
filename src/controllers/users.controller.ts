@@ -102,11 +102,25 @@ export const UserController = {
                 data: null
             })
         }
-
+const payload = {
+    id: userData.id,
+    email: userData.email,
+    nome: userData.nome
+}
+        const token = jwt.sign(payload, process.env.JWT_SECRET_KEY as string, { expiresIn: "1h" })
+            
         return res.status(200).json({
             status: "success",
             message: "Login realizado com sucesso",
-            data: null
+            data: { 
+                token: token,
+                user: {
+                    id: userData.id,
+                    email: userData.email,
+                    nome: userData.nome
+                }                
+            }
+
         }) 
     },
     

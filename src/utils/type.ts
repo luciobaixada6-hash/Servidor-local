@@ -59,7 +59,7 @@ export interface propostaDBType {
 export interface UserDBType {
     id: string,
     nome: string,
-    nome_identifica: string,
+    numero_identifica: string,
     data_nascimento: string,
     email: string,
     telefone: string,

@@ -1,65 +1,107 @@
-components:
-  schemas:
     # schema/users.yaml
+    #id: string,
+    #nome: string,
+    #nome_identifica: string,
+    #data_nascimento: string,
+    #email: string,
+    #telefone: string,
+    #pais: string,
+    #localidade: string,
+    #password: string,
+    #enabled: boolean,
+    #created_at: Date,
+    #update_at: Date
+
+
+
+components:
+# shemas principal do utilizador
+  schemas:
     Users:
       type: object
       properties:
         id:
           type: string
           example: "550e8400-e29b-41d4-a716-446655440000"
-          description: "Identificador único do usuário (UUID)"
-        name:
+        nome:
           type: string
           example: "João Silva"
-          description: "Nome completo do usuário"
+        numero_identifica:
+          type: string
+          example: "123456789"
+        data_nascimento:
+          type: string
+          example: "1990-01-01"
         email:
           type: string
-          format: email
           example: "joao.silva@email.com"
-          description: "Email único do usuário"
+        telefone:
+          type: string
+          example: "+351912345678"
+        pais:
+          type: string
+          example: "Portugal"
+        localidade:
+          type: string
+          example: "Lisboa"
+        password:
+          type: string
+          example: "password123"
+        enabled:
+          type: boolean
+          example: true
+        created_at:
+          type: string
+          format: date-time
+          example: "2024-01-01T12:00:00Z"
+        updated_at: 
+          type: string
+          format: date-time
+          example: "2024-01-01T12:00:00Z"
 
-    UsersResponse:
+    # schemas para criar um novo utilizador
+    CreateUsers:
       type: object
       properties:
-        id:
-          type: string
-          example: "550e8400-e29b-41d4-a716-446655440000"
-        name:
+        nome:
           type: string
           example: "João Silva"
+        numero_identifica:
+          type: string
+          example: "123456789"
+        data_nascimento:
+          type: string
+          example: "1990-01-01"
         email:
           type: string
           example: "joao.silva@email.com"
-
-    UsersCreateRequest:
-      type: object
-      properties:
-        id:
+        telefone:
           type: string
-          example: "550e8400-e29b-41d4-a716-446655440000"
-          description: "Identificador único do usuário"
-        name:
+          example: "+351912345678"
+        pais:
           type: string
-          example: "João Silva"
-          description: "Nome completo do usuário"
-        email:
+          example: "Portugal"
+        localidade:
           type: string
-          format: email
-          example: "joao.silva@email.com"
-          description: "Email do usuário (deve ser único)"
+          example: "Lisboa"
+        password:
+          type: string
+          example: "password123"
+        enabled:
+          type: boolean
+          example: true
 
     LoginUsers:
       type: object
       properties:
         email:
           type: string
-          format: email
           example: "joao.silva@email.com"
         password:
           type: string
           example: "password123"
 
-    UserssResponseError:
+    UsersResponseError:
       type: object
       properties:
         message:
@@ -68,11 +110,12 @@ components:
         status:
           type: boolean
           example: false
-      required:
-        - message
-        - status
+        data:
+          type: object
+          properties:
+            null
 
-    UserssResponseSuccess:
+    UsersResponseSuccess:
       type: object
       properties:
         message:
@@ -82,7 +125,6 @@ components:
           type: boolean
           example: true
         data:
-          $ref: '#/components/schemas/UserResponse'
-      required:
-        - message
-        - status
+          type: object
+          $ref: '#/components/schemas/UserResponse'          
+

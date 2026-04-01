@@ -6,18 +6,19 @@ import { generateUUID } from "../utils/uuid.js"
 
 export const UserModel = {
     async create(newUser: UserDBType) {
+        console.log(newUser)
         try {
-            const query = `INSERT INTO tbl_utilizadores (id, nome, nome_identifica, data_nascimento, email, telefone, pais, localidade, password, enabled, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+            const query = `INSERT INTO tbl_utilizadores (id, nome, nome_identifica, data_nascimento, email, telefone, pais, localidade, password, enabled, created_at, update_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
             const values = [
                 generateUUID(),
                 newUser.nome,
-                newUser.nome_identifica,
+                newUser.numero_identifica,
                 formatDateDDMMYYYY(newUser.data_nascimento),
                 newUser.email,
-                await hashPassword(newUser.password),
                 newUser.telefone,
                 newUser.pais,
                 newUser.localidade,
+                await hashPassword(newUser.password),               
                 newUser.enabled,
                 new Date(),
                 new Date()
@@ -72,10 +73,10 @@ export const UserModel = {
 
     async update (id: string, updatedUser: UserDBType) {
         try {
-            const query = `UPDATE tbl_utilizadores SET nome=?, nome_identifica=?, data_nascimento=?, email=?, telefone=?, pais=?, localidade=?, password=?, enabled=?, updated_at=? WHERE id=?`
+            const query = `UPDATE tbl_utilizadores SET nome=?, numero_identifica=?, data_nascimento=?, email=?, telefone=?, pais=?, localidade=?, password=?, enabled=?, update_at=? WHERE id=?`
             const values = [
                 updatedUser.nome,
-                updatedUser.nome_identifica,
+                updatedUser.numero_identifica,
                 formatDateDDMMYYYY(updatedUser.data_nascimento),
                 updatedUser.email,
                 updatedUser.telefone,
