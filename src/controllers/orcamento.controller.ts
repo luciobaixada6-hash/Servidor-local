@@ -1,6 +1,9 @@
 import type { Request, Response } from "express"
-import type { OrcamentoDBType } from "../utils/type.js"
+import { EstadoProposta, type OrcamentoDBType, type PropostaDBType, type PropostaDBType } from "../utils/type.js"
 import { OrcamentoModel } from "../models/orcamento.models.js"
+import { PropostaModel } from "../models/proposta.models.js"
+import { PrestadorModel } from "../models/prestador.models.js"
+import { PrestacaoServicoModel } from "../models/prestacao-servico..models.js"
 
 export const OrcamentoController = {
     async create(req: Request, res: Response) {
@@ -141,5 +144,104 @@ export const OrcamentoController = {
             message: "Orcamento apagado com sucesso",
             data: deleteOrcamentoResponse
         })
+    },
+
+
+    async calculateBudget(req: Request, res: Response) {
+        const { id } = req.params;
+
+        try {
+
+            if (!id) {
+                return res.status(400).json({
+                    status: "error",
+                    message: "ID obrigatorio",
+                    data: null
+                })
+            }
+
+            const prestadorServico = await PrestacaoServicoModel.getByIdOrcamento(id as string)
+
+            if (!prestadorServico) {
+                return res.status(404).json({
+                    status: "error",
+                    message: "Prestador de servico nao encontrado",
+                    data: null
+                })
+            }
+
+
+            // logic based on the 
+
+            // fetch all propasal
+            const proposals = await PropostaModel.getByPrestacaoServico(prestadorServico.id);
+            if (!proposals) {
+                return res.status(400).json({
+                    status: "error",
+                    message: "Nenhuma proposta encontrada",
+                    data: null
+                });
+            }
+
+            // find accepted proposal
+            const acceptedProposal: PropostaDBType | undefined = proposals.find((proposal) => proposal.estado === EstadoProposta.ACEITE);
+
+            if (!acceptedProposal) {
+                return res.status(400).json({
+                    status: "error",
+                    message: "Nenhuma proposta aceita encontrada",
+                    data: null
+                });
+            }
+
+            const precoHora = acceptedProposal.preco_hora;
+            const horasEstimadas = acceptedProposal.horas_estimadas;
+
+            //fetch prestador to get urgency tax minimum discount and discount percentage based on attrs in utits/type.ts
+            const prestador = await PrestadorModel.get(acceptedProposal.idprestador);
+            if (!prestador) {
+                return res.status(400).json({
+                    status: "error",
+                    message: "Prestador nao encontrado",
+                    data: null
+                });
+            }
+            const precoHora = acceptedProposal.precoHora;
+            const horasEstimadas = acceptedProposal.horasEstimadas;
+
+    connst urgencyTax = prestador.taxaUrgencia;
+            const minDiscount = prestador.minimoDesconto;
+            const discountPercentage = prestador.percentagemDesconto;
+
+
+            // calculate the  budget based on utils/type.ts 
+            let subtotal = precoHora * horasEstimadas
+
+            // if miminum discount is greater than discount percentage
+            if (minDiscount > mininumDiscount) {
+                subtotal = subtotal * (subtotal * (1 - discountPercentage))
+            }
+
+            if (prestacaoServico.urgente) {
+                // add urgency tax
+                subtotal = subtotal * (1 + urgencyTax)
+            }
+
+            const updatedOrcamentoResponse: await OrcamentoModel.updateBudget(id as string, subtotal)
+    
+    if(!updatedOrcamentoResponse) {
+        return res.status(400).json({
+            status: "error",
+            message: "Erro ao calcular orçamento",
+            data: null
+        });
     }
+
+    return res.status(200).json({
+        status: "success",
+        message: "Orçamento calculado com sucesso",
+        data: updatedOrcamentoResponse
+    });
+}
+}
 }

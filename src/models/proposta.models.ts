@@ -1,3 +1,4 @@
+import type { RowDataPacket } from "mysql2/promise"
 import db from "../lib/db.js"
 import type { propostaDBType } from "../utils/type.js"
 import { generateUUID } from "../utils/uuid.js"
@@ -96,5 +97,42 @@ export const PropostaModel = {
             console.log(err)
             return null
         }
+    },
+    
+async getByPrestacaoServico(idPrestacaoServico: string): Promise<propostaDBType[] | null> {
+    try {
+        const [rows] = await db.execute<propostaDBType[] & RowDataPacket[]>(
+            `SELECT * FROM tbl_propostas 
+            WHERE tbl_propostas.id_prestacao_servico = ?`,
+
+            [idPrestacaoServico]
+        )
+
+    if (Array.isArray(rows) && rows.length === 0) return null
+    return Array.isArray(rows) ? rows : null
+    } catch (err) {
+        console.log(err)
+        return null
     }
+},
+
+async acceptProposal(id: string) {
+    try {
+        const [rows] = await db.execute(
+            `UPDATE tbl_propostas 
+            SET estado = 'ACEITE', 
+            updated_at = ?
+            WHERE id = ?`,
+            [
+                new Date(),
+                id
+            ]
+        )
+        console.log({ rows })
+        return rows
+    } catch (err) {
+        console.log(err)
+        return null
+    }
+},
 }

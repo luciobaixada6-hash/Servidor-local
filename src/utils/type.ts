@@ -143,4 +143,15 @@ export interface prestadorType {
     percentagemDesconto: number,
     disponivel: boolean
 }
+export enum EstadoProposta {
+    PENDENTE = "PENDENTE",
+    ACEITE = "ACEITE",
+    CANCELADA = "CANCELADA"
+}   
 
+export enum EstadoPrestacaoServico {
+    PENDENTE = "pendente",
+    FINALIZADO = "finalizado",
+    EM_PROGRESSO = "em progresso",
+    CANCELADA = "cancelada"
+}
