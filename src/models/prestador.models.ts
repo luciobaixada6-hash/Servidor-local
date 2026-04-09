@@ -1,5 +1,6 @@
+import type { RowDataPacket } from "mysql2/promise"
 import db from "../lib/db.js"
-import type { PrestadorDBType} from "../utils/type.js"
+import type { PrestacaoServicoDetalhadoType,  PrestadorDBType} from "../utils/type.js"
 import { generateUUID } from "../utils/uuid.js"
 
 
@@ -38,7 +39,7 @@ export const PrestadorModel = {
         return rows
     },
 
-    async get(id: string) {
+    async get(id: string): Promise<PrestadorDBType | null> {
         try {
             const [rows] = await db.execute(
                 `SELECT * FROM tbl_prestadores 
@@ -48,7 +49,7 @@ export const PrestadorModel = {
             )
 
             if (Array.isArray(rows) && rows.length === 0) return null
-            return Array.isArray(rows) ? rows[0] : null
+            return Array.isArray(rows) ? rows[0] as PrestadorDBType: null 
         } catch (err) {
             console.log(err)
             return null
@@ -103,5 +104,35 @@ export const PrestadorModel = {
             console.log(err)
             return null
         }
+    },
+
+
+async getAllPrestacaoServicoDetalhado(limit: number, offset: number) {
+
+    try {
+        const query =`
+            SELECT
+            ps.id as id_prestacao_servico,
+            ps.designacao as descricao,
+            u.nome as nome_utilizador,
+            u.email as email_utilizador,
+            s.nome as nome_servico,
+            ps.create_at as data_pedido,
+            ps.urgente
+            FROM tbl_prestacao_servicos ps
+            INNER JOIN tbl_utilizadores u ON ps.id_utilizador = u.id
+            INNER JOIN tbl_servicos s ON ps.id_servico = s.id
+            order BY ps.create_at DESC
+            LIMIT ? OFFSET ?
+            `
+        const [rows] = await db.execute<PrestacaoServicoDetalhadoType[] & RowDataPacket[]>(query, [limit.toString(), offset.toString()])
+
+        if (Array.isArray(rows) && rows.length === 0) return null
+        return Array.isArray(rows) ? rows as PrestacaoServicoDetalhadoType[] : null
+    } catch (err) {
+        console.log(err)
+        return null
+
     }
+}
 }

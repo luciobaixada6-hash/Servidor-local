@@ -90,5 +90,20 @@ export const OrcamentoModel = {
             console.log(err)
             return null
         }
+    },
+    
+    async updateBudget(id: string, total: number) {
+        try {
+            const rows: any =await db.execute(
+                `UPDATE tbl_orcamentos 
+                SET total = ?, updated_at = ?
+                WHERE id = ?`,
+                [total, new Date(), id]
+            )
+            return rows[0].affectedRows === 0 ? null : rows[0]
+        } catch (err) {
+            console.log(err)
+            return null
+        }
     }
 }

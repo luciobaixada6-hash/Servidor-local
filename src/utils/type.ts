@@ -48,6 +48,7 @@ export interface propostaDBType {
     id_prestacao_servico: string,
     preco_hora: number,
     horas_estimadas: number,
+    idPrestador: string,
     estado: string,
     enabled: boolean,
     created_at: Date,
@@ -83,11 +84,11 @@ export interface OrcamentoType {
 export interface PropostaDBType {
     id: string,
     nif: string,
-    precoHora: string,
+    precoHora: number,
     profissao: string,
-    minimoDesconto: string,
-    taxaUrgencia: string,
-    percentagemDesconto: string,
+    minimoDesconto: number,
+    taxaUrgencia: number,
+    percentagemDesconto: number,
     enabled: boolean,
     create_at: Date,
     update_at: Date
@@ -121,12 +122,14 @@ export interface processoType {
 export interface prestacaoServicoDBType {
     id: string,
     designacao: string
-    id_orcamento: string,
     subtotal: number,
     horas_estimadas: number,
     id_prestador: string,
     id_servico: string,
     preco_hora: number,
+    id_orcamento: string,
+    id_utilizador: string,
+    urgente: boolean,
     estado: string,
     enabled: boolean,
     created_at: Date,
@@ -155,3 +158,20 @@ export enum EstadoPrestacaoServico {
     EM_PROGRESSO = "em progresso",
     CANCELADA = "cancelada"
 }
+
+export interface PrestacaoServicoDetalhadoType {
+    id: string,
+    nome_utilizador: string,
+    email_utilizador: string,
+    nome_servico: string,
+    descricao: string,
+    data_pedido: string,
+    urgente: boolean
+}
+
+export interface ResponseType<T> {
+    status: "success" | "error";
+    message: string;
+    data: T;
+}
+

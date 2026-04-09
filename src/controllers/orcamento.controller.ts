@@ -1,5 +1,5 @@
 import type { Request, Response } from "express"
-import { EstadoProposta, type OrcamentoDBType, type PropostaDBType, type PropostaDBType } from "../utils/type.js"
+import { EstadoProposta, type OrcamentoDBType, type propostaDBType, type PropostaDBType, type ResponseType } from "../utils/type.js"
 import { OrcamentoModel } from "../models/orcamento.models.js"
 import { PropostaModel } from "../models/proposta.models.js"
 import { PrestadorModel } from "../models/prestador.models.js"
@@ -150,98 +150,101 @@ export const OrcamentoController = {
     async calculateBudget(req: Request, res: Response) {
         const { id } = req.params;
 
-        try {
-
-            if (!id) {
-                return res.status(400).json({
-                    status: "error",
-                    message: "ID obrigatorio",
-                    data: null
-                })
+        if (!id) {
+            const response: ResponseType<null> = {
+                status: "error",
+                message: "ID obrigatorio",
+                data: null
             }
+            return res.status(400).json(response);
+        }
 
-            const prestadorServico = await PrestacaoServicoModel.getByIdOrcamento(id as string)
+        const prestacaoServico = await PrestacaoServicoModel.getByIdOrcamento(id as string)
 
-            if (!prestadorServico) {
-                return res.status(404).json({
-                    status: "error",
-                    message: "Prestador de servico nao encontrado",
-                    data: null
-                })
+        if (!prestacaoServico) {
+            const response: ResponseType<null> = {
+                status: "error",
+                message: "Prestacao de servico nao encontrada",
+                data: null
             }
+            return res.status(404).json(response);
+        }
 
+        // logic based on the 
 
-            // logic based on the 
+        // fetch all propasal
+        const proposals = await PropostaModel.getByPrestacaoServico(prestacaoServico.id);
+        if (!proposals) {
+            return res.status(400).json({
+                status: "error",
+                message: "Nenhuma proposta encontrada",
+                data: null
+            })
+        }
 
-            // fetch all propasal
-            const proposals = await PropostaModel.getByPrestacaoServico(prestadorServico.id);
-            if (!proposals) {
-                return res.status(400).json({
-                    status: "error",
-                    message: "Nenhuma proposta encontrada",
-                    data: null
-                });
-            }
+        // find accepted proposal
+        const acceptedProposal: propostaDBType | undefined = proposals.find((proposal) => proposal.estado === EstadoProposta.ACEITE);
 
-            // find accepted proposal
-            const acceptedProposal: PropostaDBType | undefined = proposals.find((proposal) => proposal.estado === EstadoProposta.ACEITE);
+        if (!acceptedProposal) {
+            return res.status(400).json({
+                status: "error",
+                message: "Nenhuma proposta aceita encontrada",
+                data: null
+            })
+        }
 
-            if (!acceptedProposal) {
-                return res.status(400).json({
-                    status: "error",
-                    message: "Nenhuma proposta aceita encontrada",
-                    data: null
-                });
-            }
+        const precoHora = acceptedProposal.preco_hora;
+        const horasEstimadas = acceptedProposal.horas_estimadas;
 
-            const precoHora = acceptedProposal.preco_hora;
-            const horasEstimadas = acceptedProposal.horas_estimadas;
+        //fetch prestador to get urgency tax minimum discount and discount percentage based on attrs in utits/type.ts
+        const prestador = await PrestadorModel.get(acceptedProposal.idPrestador);
+        if (!prestador) {
+            return res.status(400).json({
+                status: "error",
+                message: "Prestador nao encontrado",
+                data: null
+            });
+        }
 
-            //fetch prestador to get urgency tax minimum discount and discount percentage based on attrs in utits/type.ts
-            const prestador = await PrestadorModel.get(acceptedProposal.idprestador);
-            if (!prestador) {
-                return res.status(400).json({
-                    status: "error",
-                    message: "Prestador nao encontrado",
-                    data: null
-                });
-            }
-            const precoHora = acceptedProposal.precoHora;
-            const horasEstimadas = acceptedProposal.horasEstimadas;
+        const urgencyTax = Number(prestador.taxaUrgencia);
+        const minimoDesconto = Number(prestador.minimoDesconto);
+        const percentagemDesconto = Number(prestador.percentagemDesconto);
 
-    connst urgencyTax = prestador.taxaUrgencia;
-            const minDiscount = prestador.minimoDesconto;
-            const discountPercentage = prestador.percentagemDesconto;
+        // calculate subtotal
+        let subtotal = precoHora * horasEstimadas;
 
+        // apply discount if applicable
+        if (subtotal > minimoDesconto) {
+            subtotal = subtotal * (1 - (percentagemDesconto));
+        }
 
-            // calculate the  budget based on utils/type.ts 
-            let subtotal = precoHora * horasEstimadas
+        // apply urgency tax
+        if (prestacaoServico.urgente) {
+            subtotal = subtotal * (1 + (urgencyTax));
+        }
 
-            // if miminum discount is greater than discount percentage
-            if (minDiscount > mininumDiscount) {
-                subtotal = subtotal * (subtotal * (1 - discountPercentage))
-            }
+        // update budget
+        const updatedOrcamentoResponse = await OrcamentoModel.updateBudget(
+            id as string,
+            subtotal
+        );
 
-            if (prestacaoServico.urgente) {
-                // add urgency tax
-                subtotal = subtotal * (1 + urgencyTax)
-            }
+        if (!updatedOrcamentoResponse) {
+            return res.status(400).json({
+                status: "error",
+                message: "Erro ao calcular orçamento",
+                data: null
+            });
+        }
 
-            const updatedOrcamentoResponse: await OrcamentoModel.updateBudget(id as string, subtotal)
-    
-    if(!updatedOrcamentoResponse) {
-        return res.status(400).json({
-            status: "error",
-            message: "Erro ao calcular orçamento",
-            data: null
-        });
+        const response: ResponseType<OrcamentoDBType> = {
+            status: "success",
+            message: "Orcamento calculado com sucesso",
+            data: updatedOrcamentoResponse
+        }
+        return res.status(200).json(response)
+        }
     }
 
-    return res.status(200).json({
-        status: "success",
-        message: "Orçamento calculado com sucesso",
-        data: updatedOrcamentoResponse
-    });
-}
-}
-}
+
+
