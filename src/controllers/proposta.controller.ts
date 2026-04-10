@@ -6,7 +6,10 @@ import type { propostaDBType } from "../utils/type.js"
 export const PropostaController = {
     async create(req: Request, res: Response) {
         try {
-            const propostaData = req.body as propostaDBType
+            const propostaData: propostaDBType = req.body 
+
+            if (!propostaData) return res.status(400).json({ message: "Erro ao criar proposta" })
+
             const propostaResponse = await PropostaModel.create(propostaData)
 
             if (!propostaResponse) return res.status(400).json({ message: "Erro ao criar proposta" })

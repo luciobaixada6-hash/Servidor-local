@@ -5,43 +5,59 @@ import { generateUUID } from "../utils/uuid.js"
 
 
 export const PrestadorModel = {
-    async create(prestador: PrestadorDBType) {
+    async create(prestador: PrestadorDBType): Promise<PrestadorDBType | null> {
         try {
-            const [rows] = await db.execute(
+            const id = generateUUID()
+            const now = new Date()
+            
+            await db.execute(
                 `INSERT INTO tbl_prestadores 
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+                (id, nif, precoHora, profissao, minimoDesconto, taxaUrgencia, percentagemDesconto, disponivel, enabled, create_at, updated_at)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
 
                 [
-                    generateUUID(),
+                    id,
                     prestador.nif,
                     prestador.precoHora,
                     prestador.profissao,
                     prestador.minimoDesconto,
                     prestador.taxaUrgencia,
                     prestador.percentagemDesconto,
-                    prestador.profissao,
+                    prestador.disponivel,
                     prestador.enabled,
-                    new Date(),
-                    new Date()
+                    now,
+                    now
                 ]
             )
-            console.log({ rows })
-            return rows
+            
+            return {
+                id,
+                nif: prestador.nif,
+                precoHora: prestador.precoHora,
+                profissao: prestador.profissao,
+                minimoDesconto: prestador.minimoDesconto,
+                taxaUrgencia: prestador.taxaUrgencia,
+                percentagemDesconto: prestador.percentagemDesconto,
+                disponivel: prestador.disponivel,
+                enabled: prestador.enabled,
+                create_at: now,
+                updated_at: now
+            }
         } catch (err) {
             console.log(err)
             return null
         }
     },
 
-    async getAll() {
-        const [rows] = await db.execute("SELECT * FROM tbl_prestadores")
+    async getAll(): Promise<PrestadorDBType[] | null> {
+        const [rows] = await db.execute<PrestadorDBType[] & RowDataPacket[]>("SELECT * FROM tbl_prestadores")
 
-        return rows
+        return Array.isArray(rows) ? rows as PrestadorDBType[] : null
     },
 
     async get(id: string): Promise<PrestadorDBType | null> {
         try {
-            const [rows] = await db.execute(
+            const [rows] = await db.execute<PrestadorDBType & RowDataPacket[]>(
                 `SELECT * FROM tbl_prestadores 
                 WHERE tbl_prestadores.id = ?`,
 
@@ -56,16 +72,20 @@ export const PrestadorModel = {
         }
     },
 
-    async update(id: string, prestador: PrestadorDBType) {
+    async update(id: string, prestador: PrestadorDBType): Promise<PrestadorDBType | null> {
         try {
-            const [rows] = await db.execute(
-                `UPDATE tbl_prestador 
-                SET taxa_urgencia = ?, 
-                percentagem_desconto = ?, 
-                minimo_desconto = ?, 
-                nif = ?, 
+            const now = new Date()
+            
+            await db.execute(
+                `UPDATE tbl_prestadores 
+                SET nif = ?, 
+                precoHora = ?, 
                 profissao = ?, 
-                enable = ?, 
+                minimoDesconto = ?, 
+                taxaUrgencia = ?, 
+                percentagemDesconto = ?, 
+                disponivel = ?,
+                enabled = ?, 
                 updated_at = ?
                 WHERE id = ?`,
 
@@ -76,30 +96,42 @@ export const PrestadorModel = {
                     prestador.minimoDesconto,
                     prestador.taxaUrgencia,
                     prestador.percentagemDesconto,
-                    prestador.profissao,
+                    prestador.disponivel,
                     prestador.enabled,
-                    new Date(),
+                    now,
                     id
                 ]
             )
-            console.log({ rows })
-            return rows
+            
+            return {
+                id,
+                nif: prestador.nif,
+                precoHora: prestador.precoHora,
+                profissao: prestador.profissao,
+                minimoDesconto: prestador.minimoDesconto,
+                taxaUrgencia: prestador.taxaUrgencia,
+                percentagemDesconto: prestador.percentagemDesconto,
+                disponivel: prestador.disponivel,
+                enabled: prestador.enabled,
+                create_at: prestador.create_at,
+                updated_at: now
+            }
         } catch (err) {
             console.log(err)
             return null
         }
     },
 
-    async delete(id: string) {
+    async delete(id: string): Promise<boolean | null> {
         try {
-            const rows: any = await db.execute(
+            const [result]: any = await db.execute(
                 `DELETE FROM tbl_prestadores 
                 WHERE id = ?`,
 
                 [id]
             )
 
-            return rows[0].affectedRows === 0 ? null : rows[0]
+            return result.affectedRows > 0
         } catch (err) {
             console.log(err)
             return null
@@ -107,32 +139,5 @@ export const PrestadorModel = {
     },
 
 
-async getAllPrestacaoServicoDetalhado(limit: number, offset: number) {
 
-    try {
-        const query =`
-            SELECT
-            ps.id as id_prestacao_servico,
-            ps.designacao as descricao,
-            u.nome as nome_utilizador,
-            u.email as email_utilizador,
-            s.nome as nome_servico,
-            ps.create_at as data_pedido,
-            ps.urgente
-            FROM tbl_prestacao_servicos ps
-            INNER JOIN tbl_utilizadores u ON ps.id_utilizador = u.id
-            INNER JOIN tbl_servicos s ON ps.id_servico = s.id
-            order BY ps.create_at DESC
-            LIMIT ? OFFSET ?
-            `
-        const [rows] = await db.execute<PrestacaoServicoDetalhadoType[] & RowDataPacket[]>(query, [limit.toString(), offset.toString()])
-
-        if (Array.isArray(rows) && rows.length === 0) return null
-        return Array.isArray(rows) ? rows as PrestacaoServicoDetalhadoType[] : null
-    } catch (err) {
-        console.log(err)
-        return null
-
-    }
-}
 }
