@@ -1,36 +1,67 @@
-import type { Request, Response } from "express"
+import { response, type Request, type Response } from "express"
 import { PropostaModel } from "../models/proposta.models.js"
-import type { propostaDBType } from "../utils/type.js"
+import type { PropostaDBType, propostaDBType, ResponseType } from "../utils/type.js"
 
 
 export const PropostaController = {
     async create(req: Request, res: Response) {
-        try {
-            const propostaData: propostaDBType = req.body 
+        const propostaData: propostaDBType = req.body
 
-            if (!propostaData) return res.status(400).json({ message: "Erro ao criar proposta" })
-
-            const propostaResponse = await PropostaModel.create(propostaData)
-
-            if (!propostaResponse) return res.status(400).json({ message: "Erro ao criar proposta" })
-
-            return res.status(201).json({ message: "Proposta criada com sucesso", propostaResponse })
-        } catch (err) {
-            console.log(err)
-            return res.status(500).json({ message: "Erro ao criar proposta" })
+        if (!propostaData) {
+            const response: ResponseType<null> = {
+                status: "error",
+                message: "Dados de proposta inválidos",
+                data: null
+            };
+            return res.status(400).json(response)
         }
+        const createPropostaResponse: propostaDBType | null = await PropostaModel.create(propostaData)
+
+        if (!createPropostaResponse) {
+            const response: ResponseType<null> = {
+                status: "error",
+                message: "Erro ao criar proposta",
+                data: null
+            }
+            return res.status(500).json(response)
+        }
+
+        const response: ResponseType<propostaDBType> = {
+            status: "success",
+            message: "Proposta criada com sucesso",
+            data: createPropostaResponse
+        }
+        return res.status(201).json(response)
     },
+
 
     async getAll(req: Request, res: Response) {
         try {
             const propostaResponse = await PropostaModel.getAll()
 
-            if (!propostaResponse) return res.status(400).json({ message: "Erro ao buscar propostas" })
+            if (!propostaResponse) {
+                const response: ResponseType<null> = {
+                    status: "error",
+                    message: "Erro ao buscar propostas",
+                    data: null
+                }
+                return res.status(400).json(response)
+            }
 
-            return res.status(200).json({ message: "Propostas encontradas com sucesso", propostaResponse })
+            const response: ResponseType<typeof propostaResponse> = {
+                status: "success",
+                message: "Propostas encontradas com sucesso",
+                data: propostaResponse
+            }
+            return res.status(200).json(response)
         } catch (err) {
             console.log(err)
-            return res.status(500).json({ message: "Erro ao buscar propostas" })
+            const response: ResponseType<null> = {
+                status: "error",
+                message: "Erro ao buscar propostas",
+                data: null
+            }
+            return res.status(500).json(response)
         }
     },
 
@@ -39,12 +70,29 @@ export const PropostaController = {
         try {
             const propostaResponse = await PropostaModel.get(id as string)
 
-            if (!propostaResponse) return res.status(400).json({ message: "Erro ao buscar proposta" })
+            if (!propostaResponse) {
+                const response: ResponseType<null> = {
+                    status: "error",
+                    message: "Erro ao buscar proposta",
+                    data: null
+                }
+                return res.status(400).json(response)
+            }
 
-            return res.status(200).json({ message: "Proposta encontrada com sucesso", propostaResponse })
+            const response: ResponseType<typeof propostaResponse> = {
+                status: "success",
+                message: "Proposta encontrada com sucesso",
+                data: propostaResponse
+            }
+            return res.status(200).json(response)
         } catch (err) {
             console.log(err)
-            return res.status(500).json({ message: "Erro ao buscar proposta" })
+            const response: ResponseType<null> = {
+                status: "error",
+                message: "Erro ao buscar proposta",
+                data: null
+            }
+            return res.status(500).json(response)
         }
     },
 
@@ -54,12 +102,29 @@ export const PropostaController = {
             const propostaData = req.body as propostaDBType
             const propostaResponse = await PropostaModel.update(id as string, propostaData)
 
-            if (!propostaResponse) return res.status(400).json({ message: "Erro ao atualizar proposta" })
+            if (!propostaResponse) {
+                const response: ResponseType<null> = {
+                    status: "error",
+                    message: "Erro ao atualizar proposta",
+                    data: null
+                }
+                return res.status(400).json(response)
+            }
 
-            return res.status(200).json({ message: "Proposta atualizada com sucesso", propostaResponse })
+            const response: ResponseType<typeof propostaResponse> = {
+                status: "success",
+                message: "Proposta atualizada com sucesso",
+                data: propostaResponse
+            }
+            return res.status(200).json(response)
         } catch (err) {
             console.log(err)
-            return res.status(500).json({ message: "Erro ao atualizar proposta" })
+            const response: ResponseType<null> = {
+                status: "error",
+                message: "Erro ao atualizar proposta",
+                data: null
+            }
+            return res.status(500).json(response)
         }
     },
 
@@ -68,12 +133,29 @@ export const PropostaController = {
         try {
             const propostaResponse = await PropostaModel.delete(id as string)
 
-            if (!propostaResponse) return res.status(400).json({ message: "Erro ao deletar proposta" })
+            if (!propostaResponse) {
+                const response: ResponseType<null> = {
+                    status: "error",
+                    message: "Erro ao deletar proposta",
+                    data: null
+                }
+                return res.status(400).json(response)
+            }
 
-            return res.status(200).json({ message: "Proposta deletada com sucesso", propostaResponse })
+            const response: ResponseType<typeof propostaResponse> = {
+                status: "success",
+                message: "Proposta deletada com sucesso",
+                data: propostaResponse
+            }
+            return res.status(200).json(response)
         } catch (err) {
             console.log(err)
-            return res.status(500).json({ message: "Erro ao deletar proposta" })
+            const response: ResponseType<null> = {
+                status: "error",
+                message: "Erro ao deletar proposta",
+                data: null
+            }
+            return res.status(500).json(response)
         }
     }
 }
