@@ -1,8 +1,8 @@
 import type { Request, Response } from "express"
 import type { UserDBType } from "../utils/type.js"
-import {createUser, getUserById, getUsers} from "../users.js"
+import { createUser, getUserById, getUsers } from "../users.js"
 import { UserModel } from "../models/users.models.js"
-import { comparePassword} from "../utils/password.js"
+import { comparePassword } from "../utils/password.js"
 import jwt from "jsonwebtoken"
 
 export const UserController = {
@@ -25,7 +25,7 @@ export const UserController = {
     },
 
     async getAll(req: Request, res: Response) {
-        const getAllUsersResponse = await UserModel.getAll() 
+        const getAllUsersResponse = await UserModel.getAll()
 
         if (!getAllUsersResponse) {
             return res.status(500).json({
@@ -102,28 +102,68 @@ export const UserController = {
                 data: null
             })
         }
-const payload = {
-    id: userData.id,
-    email: userData.email,
-    nome: userData.nome
-}
+        const payload = {
+            id: userData.id,
+            email: userData.email,
+            nome: userData.nome,
+            role: userData.role,
+        }
         const token = jwt.sign(payload, process.env.JWT_SECRET_KEY as string, { expiresIn: "1h" })
-            
+
         return res.status(200).json({
             status: "success",
             message: "Login realizado com sucesso",
-            data: { 
-                token: token,
+            data: {
+                token,
                 user: {
                     id: userData.id,
                     email: userData.email,
                     nome: userData.nome
-                }                
+                }
             }
-
-        }) 
+        })
     },
-    
+
+    async resetPassWord(req: Request, res: Response) {
+        const { id, password } = req.body
+
+        if (!id || !password) {
+            return res.status(400).json({
+                status: "error",
+                message: "ID e nova palavra-passe obrigatorios",
+                data: null
+            })
+        }
+
+        const existingUser = await UserModel.get(id as string)
+
+        if (!existingUser) {
+            return res.status(404).json({
+                status: "error",
+                message: "Utilizador nao encontrado",
+                data: null
+            })
+        }
+
+        const updatedUser = await UserModel.update(id as string, {
+            ...(existingUser as UserDBType),
+            password
+        })
+
+        if (!updatedUser) {
+            return res.status(500).json({
+                status: "error",
+                message: "Erro ao redefinir palavra-passe",
+                data: null
+            })
+        }
+
+        return res.status(200).json({
+            status: "success",
+            message: "Palavra-passe redefinida com sucesso",
+            data: updatedUser
+        })
+    },
 
     async update(req: Request, res: Response) {
         const { id } = req.params
@@ -137,6 +177,9 @@ const payload = {
                 data: null
             })
         }
+
+        const userData = await UserModel.get(id as string)
+
 
         if (!updatedUser) {
             return res.status(400).json({

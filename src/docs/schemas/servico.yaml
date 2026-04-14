@@ -43,8 +43,36 @@ componentes:
         enabled:
           type: boolean
           example: true
+    # schema para buscar servico detalhado
+    ServicoDetalhado:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        nome:
+          type: string
+          example: "servico sentinela"
+        descricao:
+          type: string
+          example: "Servico de sentinela profissional para residência e trabalho"
+        designacao_categoria:
+          type: string
+          example: "Limpeza"
+        id_empresa:
+          type: integer
+          example: 1
+        designacao_empresa:
+          type: string
+        example: "empresa sentinela"
+      icone_empresa:
+        type: string
+        example: ""
+      enabled:
+          type: boolean
+          example: true
 
-    # shema generico para sucesso
+      
     ResponseSuccess:
     type: object
     properties:

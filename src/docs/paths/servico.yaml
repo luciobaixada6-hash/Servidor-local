@@ -1,13 +1,28 @@
 paths:
-  /servico:
+  /servico/all-details:
     get:
-      summary: Listar todos os servico
+      summary: Listar todos os servicos detalhados
       tags:
         - Servico
-      description: Retorna uma lista de todos os servico disponiveis
+      description: Retorna uma lista de todos os servico disponiveis com detalhes
+      parameters:
+        - name: limit
+          in: query
+          required: false
+          description: Limite de servicos a serem retornados
+          schema:
+            type: integer
+            example: 10
+        - name: offset
+          in: query
+          required: false
+          description: offset de servicos a serem retornados
+          schema:
+            type: integer
+            example: 0
       responses:
         "200":
-          description: Listar servico
+          description: Listar servico detalhados
           content:
             application/json:
               schema:

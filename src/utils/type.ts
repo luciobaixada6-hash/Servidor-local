@@ -1,3 +1,29 @@
+import e from "express";
+export enum Role {
+    CLIENTE = "cliente",
+    ADMIN = "admin",
+    PRESTADOR = "prestador",
+    EMPRESA = "empresa"
+}
+export enum EstadoProposta {
+    PENDENTE = "PENDENTE",
+    ACEITE = "ACEITE",
+    CANCELADA = "CANCELADA"
+}   
+
+export enum EstadoPrestacaoServico {
+    PENDENTE = "pendente",
+    FINALIZADO = "finalizado",
+    EM_PROGRESSO = "em progresso",
+    CANCELADA = "cancelada"
+}
+
+export enum TipoPrestador {
+    PARTICULAR = "particular",
+    EMPRESA = "empresa"
+}
+
+
 export interface PedidoServicotype {
     cliente: string;
     descricao: string;
@@ -66,6 +92,7 @@ export interface UserDBType {
     telefone: string,
     pais: string,
     localidade: string,
+    role: Role,
     password: string,
     enabled: boolean,
     created_at: Date,
@@ -127,10 +154,12 @@ export interface prestacaoServicoDBType {
     id_prestador: string,
     id_servico: string,
     preco_hora: number,
+    id_empresa: string,
     id_orcamento: string,
     id_utilizador: string,
+    tipo_prestador: TipoPrestador,
     urgente: boolean,
-    estado: string,
+    estado: EstadoPrestacaoServico,
     enabled: boolean,
     created_at: Date,
     updated_at: Date
@@ -146,18 +175,7 @@ export interface prestadorType {
     percentagemDesconto: number,
     disponivel: boolean
 }
-export enum EstadoProposta {
-    PENDENTE = "PENDENTE",
-    ACEITE = "ACEITE",
-    CANCELADA = "CANCELADA"
-}   
 
-export enum EstadoPrestacaoServico {
-    PENDENTE = "pendente",
-    FINALIZADO = "finalizado",
-    EM_PROGRESSO = "em progresso",
-    CANCELADA = "cancelada"
-}
 
 export interface PrestacaoServicoDetalhadoType {
     id: string,
@@ -190,4 +208,24 @@ export interface ResponseType<T> {
     data: T;
 }
 
+export interface categoriaDBType {
+    id: string,
+    designacao: string,
+    icone: string,
+    created_at: Date,
+    updated_at: Date
+}
+
+export interface EmpresaDBType {
+    id: string,
+    designacao: string,
+    descricao: string,
+    localizacao: string,
+    nif: string,
+    icone: string,
+    id_utilizador: string,
+    enabled: boolean,
+    created_at: Date,
+    updated_at: Date
+}
 

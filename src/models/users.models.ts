@@ -1,7 +1,8 @@
 import db from "../lib/db.js"
+import type { RowDataPacket } from "mysql2/promise"
 import { formatDateDDMMYYYY } from "../utils/date.js"
 import { hashPassword } from "../utils/password.js"
-import type {  UserDBType} from "../utils/type.js"
+import type { UserDBType } from "../utils/type.js"
 import { generateUUID } from "../utils/uuid.js"
 
 export const UserModel = {
@@ -31,15 +32,18 @@ export const UserModel = {
         }
     },
 
-    async get(id: string) {
+    async get(id: string): Promise<UserDBType | null> {
         try {
             const query = `SELECT * FROM tbl_utilizadores WHERE id = ?`
 
             const values = [id]
 
-            const rows = await db.execute(query, values);
-            return Array.isArray(rows) && rows.length > 0 ? rows[0]: null;
+            const [rows] = await db.execute<UserDBType[] & RowDataPacket[]>(query, values)
 
+            if (Array.isArray(rows) && rows.length > 0) {
+                return rows[0] as UserDBType
+            }
+            return null
 
         } catch (error) {
             console.error(error);

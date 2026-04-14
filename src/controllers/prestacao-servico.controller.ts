@@ -1,4 +1,4 @@
-import type { Request, Response } from "express"
+import { type Request, type Response } from "express"
 import type { prestacaoServicoDBType, ResponseType } from "../utils/type.js"
 import { PrestacaoServicoModel } from "../models/prestacao-servico..models.js"
 
@@ -167,11 +167,14 @@ export const PrestacaoServicoController = {
                 data: null
             })
         }
-        return res.status(200).json({
+
+const response: ResponseType<typeof getAllPrestacaoServicoResponse> = {
             status: "success",
             message: "Prestacoes de servico buscadas com sucesso",
             data: getAllPrestacaoServicoResponse
-        })
+        }
+        return res.status(200).json(response)
     }
-}
+}    
+
 

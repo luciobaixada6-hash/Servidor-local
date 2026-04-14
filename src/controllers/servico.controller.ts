@@ -1,6 +1,6 @@
+import { GCProfiler } from "node:v8";
 import { serviceModel } from "../models/servico.models.js";
-import { deleteService, updateService } from "../servico.js";
-import type { serviceDBType } from "../utils/type.js"
+import type { ResponseType, serviceDBType } from "../utils/type.js"
 import type { Request, Response } from "express"
 
 
@@ -10,33 +10,36 @@ export const servicoController = {
         const newServico: serviceDBType = req.body
 
         if (!newServico) {
-            return res.status(400).json({
+            const response: ResponseType<null> = {
                 status: "error",
                 message: "Dados de servico invalidos",
-                data: null,
-            })
+                data: null
+            }
+            return res.status(400).json(response)
         }
 
         const createServiceResponse = await serviceModel.create(newServico)
 
-        if (!createServiceResponse === null) {
-            return res.status(400).json({
+        if (!createServiceResponse) {
+            const response: ResponseType<null> = {
                 status: "error",
                 message: "error ao criar servico",
                 data: null
-            })
+            }
+            return res.status(400).json(response)
         }
 
-        res.status(200).json({
-            status: "sucess",
+        const response: ResponseType<typeof createServiceResponse> = {
+            status: "success",
             message: "servico criado com sucesso",
             data: createServiceResponse
-        })
+        }
+        return res.status(200).json(response)
     },
 
     async getAll(req: Request, res: Response) {
-        const getAllServiceREswponse = await serviceModel.getAll()
-        if (!getAllServiceREswponse) {
+        const getAllServiceResponse: serviceDBType[] | null = await serviceModel.getAll()
+        if (!getAllServiceResponse) {
             return res.status(500).json({
                 status: "error",
                 message: "erro ao buscar servidor",
@@ -44,12 +47,12 @@ export const servicoController = {
             })
         }
 
-        return res.status(200).json({
-            status: "sucess",
+        const response: ResponseType<typeof getAllServiceResponse> = {
+            status: "success",
             message: "servico buscado com sucesso ",
-            data: getAllServiceREswponse
-        })
-
+            data: getAllServiceResponse
+        }
+        return res.status(200).json(response)
     },
     async get(req: Request, res: Response) {
         const id = req.params.id
@@ -91,7 +94,7 @@ export const servicoController = {
             })
         }
 
-        const updateServiceResponse = await updateService(id as string, updatService)
+        const updateServiceResponse = await serviceModel.update(id as string, updatService)
 
         return res.status(200).json({
             status: "sucess",
@@ -128,7 +131,39 @@ export const servicoController = {
             message: "servico apagado com sucesso",
             data: deleteServiceResponse
         })
+    },
+
+    getAllServicoDetalhado(req: Request, res: Response) {
+        const { limit, offset } = req.query
+
+        let LIMIT = 10
+        let OFFSET = 0
+
+        if (limit && parseInt(limit as string) > 0) {
+            LIMIT = parseInt(limit as string)
+        }
+
+        if (offset && parseInt(offset as string) >= 0) {
+            OFFSET = parseInt(offset as string)
+        }
+
+        const getAllServicoDetalhadoResponse = serviceModel.getAllServicoDetalhado(LIMIT, OFFSET)
+
+        if (!getAllServicoDetalhadoResponse) {
+            const response: ResponseType<null> = {
+                status: "error",
+                message: "Erro ao buscar servicos detalhados",
+                data: null
+            }
+            return res.status(404).json(response)
+        }
+
+        const response: ResponseType<typeof getAllServicoDetalhadoResponse> = {
+            status: "success",
+            message: "Servicos detalhados buscados com sucesso",
+            data: getAllServicoDetalhadoResponse
+        }
+        return res.status(200).json(response)
+
     }
-};
-
-
+}

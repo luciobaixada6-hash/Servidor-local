@@ -41,9 +41,11 @@ export const PrestacaoServicoModel = {
                 id_prestador: prestacaoServico.id_prestador,
                 id_servico: prestacaoServico.id_servico,
                 preco_hora: prestacaoServico.preco_hora,
-                estado: prestacaoServico.estado,
+                id_empresa: prestacaoServico.id_empresa,
                 id_orcamento: prestacaoServico.id_orcamento,
                 id_utilizador: prestacaoServico.id_utilizador,
+                tipo_prestador: prestacaoServico.tipo_prestador,
+                estado: prestacaoServico.estado,
                 urgente: prestacaoServico.urgente,
                 enabled: prestacaoServico.enabled,
                 created_at: now,
@@ -115,7 +117,7 @@ export const PrestacaoServicoModel = {
                 ]
             )
             
-            return {
+            return{
                 id,
                 designacao: prestacaoServico.designacao,
                 subtotal: prestacaoServico.subtotal,
@@ -123,9 +125,11 @@ export const PrestacaoServicoModel = {
                 id_prestador: prestacaoServico.id_prestador,
                 id_servico: prestacaoServico.id_servico,
                 preco_hora: prestacaoServico.preco_hora,
-                estado: prestacaoServico.estado,
+                id_empresa: prestacaoServico.id_empresa,
                 id_orcamento: prestacaoServico.id_orcamento,
                 id_utilizador: prestacaoServico.id_utilizador,
+                tipo_prestador: prestacaoServico.tipo_prestador,
+                estado: prestacaoServico.estado,
                 urgente: prestacaoServico.urgente,
                 enabled: prestacaoServico.enabled,
                 created_at: prestacaoServico.created_at,

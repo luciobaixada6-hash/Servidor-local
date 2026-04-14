@@ -1,11 +1,11 @@
 import { get } from "node:http";
 import db from "../lib/db.js";
-import { ServicoDetalhadoType, type serviceDBType } from "../utils/type.js"
+import type { ServicoDetalhadoType, serviceDBType } from "../utils/type.js"
 import { addServicestoDB } from "../servico.js";
 import type { RowDataPacket } from "mysql2";
 
 export const serviceModel = {
-    async create(newService: serviceDBType) {
+    async create(newService: serviceDBType): Promise<serviceDBType | null> {
         try {
 
             const query = `INSERT INTO tbl_servicos VALUES (?,?,?,?,?,?,?,)`
@@ -20,23 +20,28 @@ export const serviceModel = {
                 new Date()
             ]
 
-            const rows = await db.execute(query, values)
+            const [result] = await db.execute(query, values) as [any, any]
 
-            return rows
+            if ((result as any).affectedRows > 0) {
+                // Get the inserted service
+                const insertId = (result as any).insertId
+                return await this.get(insertId.toString())
+            }
+            return null
         } catch (error) {
             console.log(error);
             return null;
         }
     },
 
-    async getAll() {
+    async getAll(): Promise<serviceDBType[] | null> {
 
         try {
             const query = `SELECT * FROM tbl_servicos`
 
-            const rows = await db.execute(query)
+            const [rows] = await db.execute(query) as [RowDataPacket[], any]
 
-            return Array.isArray(rows) && rows.length > 0 ? rows[0] : []
+            return Array.isArray(rows) && rows.length > 0 ? (rows as serviceDBType[]) : []
 
         } catch (error) {
             console.log(error);
@@ -44,15 +49,15 @@ export const serviceModel = {
         }
     },
 
-    async get(id: string) {
+    async get(id: string): Promise<serviceDBType | null> {
         try {
             const query = `SELECT * FROM tbl_servicos WHERE id = ?`
 
             const value = [id]
 
-            const rows = await db.execute(query, value)
+            const [rows] = await db.execute(query, value) as [RowDataPacket[], any]
 
-            return Array.isArray(rows) && rows.length > 0 ? rows[0] : null
+            return Array.isArray(rows) && rows.length > 0 ? (rows[0] as serviceDBType) : null
 
         } catch (error) {
             console.log(error);
@@ -60,7 +65,7 @@ export const serviceModel = {
         }
     },
 
-    async update(id: string, servicoAtualizado: serviceDBType) {
+    async update(id: string, servicoAtualizado: serviceDBType): Promise<serviceDBType | null> {
         try {
             const query = `UPDATE tbl_servicos
                     SET
@@ -82,9 +87,12 @@ export const serviceModel = {
                 id
             ]
             console.log(values)
-            const rows = await db.execute(query, values)
+            const [result] = await db.execute(query, values) as [any, any]
 
-            return rows
+            if ((result as any).affectedRows > 0) {
+                return await this.get(id)
+            }
+            return null
         } catch (error) {
             console.log(error);
             return null
@@ -92,7 +100,7 @@ export const serviceModel = {
 
     },
 
-    async delete(id: string) {
+    async delete(id: string): Promise<boolean> {
 
         try {
 
@@ -100,41 +108,44 @@ export const serviceModel = {
 
             const value = [id]
 
-            const rows = await db.execute(query, value)
+            const [result] = await db.execute(query, value) as [any, any]
 
-            return rows
+            return (result as any).affectedRows > 0
 
         } catch (error) {
             console.log(error)
-            return null
+            return false
         }
     },
 
     async getAllServicoDetalhado(limit: number, offset: number): Promise<ServicoDetalhadoType[] | null> {
         try {
             const query = `
-            SELECT 
-            s.id,
-            s.nome,
-            s.descricao,
-            c.designacao as designacao_categoria,
-            c.icone as icone_categoria,
-            e.id as id_empresa,
-            designacao as designacao_empresa
-            icone as icone_empresa
-            s.enabled
+            SELECT DISTINCT
+            s.id as id_servico
+            s.nome as nome_servico
+            s.descricao as descricao_servico
+            c.id as id_categoria as id_categoria
+            c.designacao as designacao_categoria
+            c.icone as icone_categoria
+            e.id as id_empresa
+            e.designacao as designacao_empresa
+            e.icone as icone_empresa
+            s.enabled 
             FROM tbl_servicos s
             INNER JOIN tbl_categorias c ON s.categoria = c.id
+            INNER JOIN tbl_prestacao_servico ps ON s.id = ps.id_servico
             INNER JOIN tbl_empresas e ON s.id_empresa = e.id
+            WHERE s.enabled = true
             LIMIT ? OFFSET ?            
             `
             const values = [limit, offset]
             const [rows] = await db.execute<ServicoDetalhadoType[] & RowDataPacket[]>(query, values)
-            return Array.isArray(rows) && rows.length > 0 ? rows as ServicoDetalhadoType[] : null 
+            return Array.isArray(rows) && rows.length > 0 ? rows as ServicoDetalhadoType[] : null
 
         } catch (error) {
             console.log(error)
             return null
         }
-}
+    }
 }
