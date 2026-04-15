@@ -50,6 +50,29 @@ export const UserModel = {
             return null;
         }
     },
+
+    async getById(id: string): Promise<UserDBType | null> {
+        try {
+            const query = `SELECT * FROM tbl_utilizadores WHERE id = ?`
+
+            const values = [id]
+
+            const [rows] = await db.execute<UserDBType[] & RowDataPacket[]>(query, values)
+            console.log(rows)            
+
+            if (Array.isArray(rows) && rows.length > 0) {
+                return rows[0] as UserDBType
+            }            
+            return null
+
+        } catch (error) {
+            console.error(error);
+            return null;
+        }
+    },
+
+
+
     async getAll() {
         try {
             const query = `SELECT * FROM tbl_utilizadores`

@@ -24,12 +24,12 @@ router.use(authMiddleware)
 
 router.get( userRoute.getAll, authorize([Role.ADMIN]), UserController.getAll);
 
-router.get( userRoute.getById, authorize([Role.ADMIN, Role.PRESTADOR, Role.CLIENTE, Role.EMPRESA]), UserController.getById);
+router.get( userRoute.getById, authorize([Role.ADMIN, Role.CLIENTE, Role.PRESTADOR,  Role.EMPRESA]), UserController.getById);
 
-router.put( userRoute.update, authorize([Role.ADMIN, Role.PRESTADOR, Role.CLIENTE, Role.EMPRESA]), UserController.update);
+router.put( userRoute.update, authorize([Role.ADMIN, Role.CLIENTE, Role.PRESTADOR,  Role.EMPRESA]), UserController.update);
 
 router.delete( userRoute.delete, authorize([Role.ADMIN]), UserController.delete);
 
-router.put(userRoute.resetPassWord, authorize([Role.ADMIN, Role.PRESTADOR, Role.CLIENTE, Role.EMPRESA]),UserController.resetPassWord)
+router.put(userRoute.resetPassWord, authorize([Role.ADMIN, Role.CLIENTE, Role.PRESTADOR, Role.EMPRESA]),UserController.resetPassWord)
 
 export { router };

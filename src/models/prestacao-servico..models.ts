@@ -199,9 +199,39 @@ async getAllPrestacaoServicoDetalhado(limit: number, offset: number) {
     } catch (err) {
         console.log(err)
         return null
+    }
+},
 
+    async getAllPrestacaoServicoByCategoria(categoria: string) {
+        try {
+            const query = `
+                SELECT DISTINCT
+                ps.id as id_prestacao_servico,
+                ps.designacao as descricao,
+                u.nome as nome_utilizador,
+                u.email as email_utilizador,
+                s.nome as nome_servico,
+                s.categoria as categoria,
+                ps.preco_hora,
+                ps.horas_estimadas,
+                ps.subtotal,
+                ps.estado,
+                ps.created_at as data_criacao
+                FROM tbl_prestacao_servico ps
+                INNER JOIN tbl_utilizadores u ON ps.id_utilizador = u.id
+                INNER JOIN tbl_servicos s ON ps.id_servico = s.id
+                WHERE s.categoria = ?
+                ORDER BY ps.created_at DESC
+            `
+            const [rows] = await db.execute<any[] & RowDataPacket[]>(query, [categoria])
+
+            if (Array.isArray(rows) && rows.length === 0) return null
+            return Array.isArray(rows) ? rows : null
+        } catch (err) {
+            console.log(err)
+            return null
+        }
     }
 }
 
 
-}

@@ -174,6 +174,34 @@ const response: ResponseType<typeof getAllPrestacaoServicoResponse> = {
             data: getAllPrestacaoServicoResponse
         }
         return res.status(200).json(response)
+    },
+
+    async getAllPrestacoesServicoBycategoria(req: Request, res: Response) {
+        const { categoria } = req.params
+
+        if (!categoria) {
+            return res.status(400).json({
+                status: "error",
+                message: "Categoria obrigatória",
+                data: null
+            })
+        }
+
+        const getPrestacaoServicoByCategoria = await PrestacaoServicoModel.getAllPrestacaoServicoByCategoria(categoria)
+
+        if (!getPrestacaoServicoByCategoria) {
+            return res.status(500).json({
+                status: "error",
+                message: "Erro ao buscar prestações de serviço por categoria",
+                data: null
+            })
+        }
+
+        return res.status(200).json({
+            status: "success",
+            message: "Prestações de serviço por categoria encontradas com sucesso",
+            data: getPrestacaoServicoByCategoria
+        })
     }
 }    
 
