@@ -157,5 +157,37 @@ export const PropostaController = {
             }
             return res.status(500).json(response)
         }
+    },
+
+    async aceitar(req: Request, res: Response) {
+        const { id } = req.params
+        try {
+            const propostaData = req.body as propostaDBType
+            const propostaResponse = await PropostaModel.update(id as string, { ...propostaData, estado: "aceita" })
+
+            if (!propostaResponse) {
+                const response: ResponseType<null> = {
+                    status: "error",
+                    message: "Erro ao aceitar proposta",
+                    data: null
+                }
+                return res.status(400).json(response)
+            }
+
+            const response: ResponseType<typeof propostaResponse> = {
+                status: "success",
+                message: "Proposta aceita com sucesso",
+                data: propostaResponse
+            }
+            return res.status(200).json(response)
+        } catch (err) {
+            console.log(err)
+            const response: ResponseType<null> = {
+                status: "error",
+                message: "Erro ao aceitar proposta",
+                data: null
+            }
+            return res.status(500).json(response)
+        }
     }
 }

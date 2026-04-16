@@ -52,8 +52,16 @@ export const PropostaModel = {
 
     async get(id: string): Promise<propostaDBType | null> {
         try {
+            //types this the correct way
+            // rows is an array of objects in this case I want to get the array of proposals, mind type errors
+            //type '[Query]
             const [rows] = await db.execute<propostaDBType & RowDataPacket[]>(
-                `SELECT * FROM tbl_propostas 
+                `SELECT Distinct
+                    pt.*,
+                    pr.id as owner
+                 * FROM tbl_propostas pt
+                INNER JOIN tbl_prestadores pr ON pt.id_Prestador = pr.id
+                INNER JOIN tbl_utilizadores u ON pr.id_utilizador = u.id
                 WHERE tbl_propostas.id = ?`,
 
                 [id]

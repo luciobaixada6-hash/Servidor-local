@@ -187,22 +187,26 @@ const response: ResponseType<typeof getAllPrestacaoServicoResponse> = {
             })
         }
 
-        const getPrestacaoServicoByCategoria = await PrestacaoServicoModel.getAllPrestacaoServicoByCategoria(categoria)
+        const getPrestacaoServicoByCategoriaDetalhadoResponse = await PrestacaoServicoModel.getAllPrestacaoServicoByCategoria(categoria as string)
 
-        if (!getPrestacaoServicoByCategoria) {
-            return res.status(500).json({
+        if (!getPrestacaoServicoByCategoriaDetalhadoResponse) {
+            const response: ResponseType<null> = {
                 status: "error",
                 message: "Erro ao buscar prestações de serviço por categoria",
                 data: null
-            })
+            }
+            return res.status(500).json(response)
         }
 
-        return res.status(200).json({
+        const response: ResponseType<typeof getPrestacaoServicoByCategoriaDetalhadoResponse> = {
             status: "success",
             message: "Prestações de serviço por categoria encontradas com sucesso",
-            data: getPrestacaoServicoByCategoria
-        })
+            data: getPrestacaoServicoByCategoriaDetalhadoResponse
+    
+        }
+        return res.status(200).json(response)
     }
+
 }    
 
 

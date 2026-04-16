@@ -176,3 +176,42 @@ paths:
             schema:
               $ref: "#/components/schemas/ResponseError"
 
+    /prestacao-servico/get-by-categoria/{categoria}:
+      get:
+        summary: Listar prestacao-servico por categoria
+        tags:
+          - Prestacao-Servico
+        description: Retorna uma lista de prestacao-servico por categoria
+        parameters:
+          - name: categoria
+            in: path
+            required: true
+            description: Categoria da prestacao-servico         
+            shema:
+              type: string
+              example: "categoria"
+        responses:
+          "200":
+            description: Prestacao-servico encontrado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrestacaoServicoByCategoriaDetalhadoResponseSuccess"
+              "400":
+                description: Dados de prestacao-servico por categoria invalido
+                content:
+                  application/json:
+                    schema:
+                      $ref: "#/components/schemas/PrestacaoServicoByCategoriaDetalhadoResponseError"
+              "500":
+                description: Erro ao buscar prestacao-servico por categoria 
+                content:
+                  application/json:
+                    schema:
+                      type: object
+                      $ref: "#/components/schemas/PrestacaoServicoByCategoriaDetalhadoResponseError"
+
+
+
+
+
