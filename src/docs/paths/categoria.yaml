@@ -1,0 +1,182 @@
+paths:
+  /categoria/:
+    get:
+      summary: Listar todas as categorias
+      tags:
+        - Categoria
+      description: Retorna uma lista de todas as categorias disponiveis
+      responses:
+        "200":
+          description: Lista de categorias
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Categoria"
+        "404":
+          description: Nenhuma categoria encontrada
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseError"
+
+  /categoria/create:
+    post:
+      summary: Criar uma nova categoria
+      tags:
+        - Categoria
+      description: Cria uma nova categoria
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateCategoria"
+      responses:
+        "201":
+          description: Categoria criada com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseSuccess"
+        "400":
+          description: Erro ao criar categoria
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseError"
+
+    /categoria/get-by-id/{id}:
+    get:
+      summary: Buscar uma categoria por ID 
+    tags:
+      - Categoria
+    description: Retorna uma categoria especifica pelo ID
+    parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID do categoria
+          schema:
+            type: string
+            example: "uuid"
+    responses:
+      "200":
+        description: Categoria encontrada
+        content:
+            application/json:
+              schema:
+                $ref: "#/components/shemas/ResponseSuccess"
+      "404":
+      description: Categoria não encontrada
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ResponseError"
+
+
+  /categoria/update/{id}:
+    put:
+      summary: Atualizar uma categoria
+      tags:
+        - Categoria
+      description: Atualiza uma categoria especifica pelo ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID da categoria a ser atualizada
+          schema:
+            type: string
+            example: "uuid"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateCategoria"
+      responses:
+        "200":
+          description: Categoria atualizada com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseSuccess"
+        "400":
+          description: Dados invalidos
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseError"
+        "404":
+          description: Categoria não encontrada
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseError"
+
+  /categoria/delete/{id}:
+    delete:
+      summary: Apagar uma categoria
+      tags:
+        - Categoria
+      description: Apaga uma categoria especifica pelo ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID da categoria a ser apagada
+          schema:
+            type: string
+            example: "uuid"
+      responses:
+        "200":
+          description: Categoria deletada com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseSuccess"
+        "404":
+          description: Categoria não encontrada
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseError"
+
+      /categoria/login:
+    post:
+      summary: Login de um utilizador
+      tags:
+        - categoria
+      description: Realizar o login de um utilizador
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Logincategoria"
+      responses:
+        "200":
+          description: "Login realizado com sucesso"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UsersResponseSuccess"
+        "400":
+          description: "Dados invalidos"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UsersResponseError"
+        "404":
+          description: "error ao logar utilizador"    
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UsersResponseError"
+
+
+
+
+

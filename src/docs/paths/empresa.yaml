@@ -1,0 +1,180 @@
+paths:
+  /empresa:
+    get:
+      summary: Listar todas as empresas
+      tags:
+        - Empresa
+      description: Retorna uma lista de todas as empresas disponíveis
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Lista de empresas
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Empresa"
+        "404":
+          description: Nenhuma empresa encontrada
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseError"
+
+  /empresa/create:
+    post:
+      summary: Criar uma nova empresa
+      tags:
+        - Empresa
+      description: Cria uma nova empresa
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateEmpresa"
+      responses:
+        "201":
+          description: Empresa criada com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseSuccess"
+        "400":
+          description: Erro ao criar empresa
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseError"
+
+  /empresa/get-by-id/{id}:
+    get:
+      summary: Obter empresa por ID
+      tags:
+        - Empresa
+      description: Retorna uma empresa específica pelo ID
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Empresa encontrada
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Empresa"
+        "404":
+          description: Empresa não encontrada
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseError"
+
+  /empresa/login:
+    post:
+      summary: Login de um utilizador
+      tags:
+        - empresa
+      description: Realizar o login de um utilizador
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Loginempresa"
+      responses:
+        "200":
+          description: "Login realizado com sucesso"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/empresaResponseSuccess"
+        "400":
+          description: "Dados invalidos"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/empresaResponseError"
+        "404":
+          description: "error ao logar utilizador"    
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/empresaResponseError"
+
+  /empresa/update/{id}:
+    put:
+      summary: Atualizar empresa
+      tags:
+        - Empresa
+      description: Atualiza os dados de uma empresa existente
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateEmpresa"
+      responses:
+        "200":
+          description: Empresa atualizada com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseSuccess"
+        "400":
+          description: Erro ao atualizar empresa
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseError"
+        "404":
+          description: Empresa não encontrada
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseError"
+
+  /empresa/delete/{id}:
+    delete:
+      summary: Remover empresa
+      tags:
+        - Empresa
+      description: Remove uma empresa do sistema
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Empresa removida com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseSuccess"
+        "404":
+          description: Empresa não encontrada
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseError"

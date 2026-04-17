@@ -4,6 +4,8 @@ import { router as usersRouter} from "./routes/users.route.js";
 import { router as orcamentoRouter } from "./routes/orcamento.route.js";
 import { router as prestacaoServicoRouter } from "./routes/prestacao-servico.route.js";
 import { router as propostaRouter } from "./routes/proposta.route.js";
+import { router as empresaRouter } from "./routes/empresa.route.js";
+import { router as categoriaRouter } from "./routes/categoria.route.js";
 import { swaggerSpec } from "./docs/swagger.js"
 import swaggerUi from "swagger-ui-express"
 import dotenv  from "dotenv";
@@ -24,6 +26,8 @@ app.use("/proposta", propostaRouter)
 app.use("/users", usersRouter)
 app.use("/proposta", propostaRouter)
 app.use("/prestacao-servico", prestacaoServicoRouter)
+app.use("/empresa", empresaRouter)
+app.use("/categoria", categoriaRouter)
 
 app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec))
 

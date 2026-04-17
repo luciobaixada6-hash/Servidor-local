@@ -1,0 +1,85 @@
+#id: string,
+#designacao: string,
+#icone: string,
+#created_at: Date,
+#updated_at: Date
+
+componentes:
+  schemas:
+    # schema/categoria.yaml
+    Categoria:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "uuid"
+        designacao:
+          type: string
+          example: "Limpeza"
+        icone:
+          type: string
+          example: "icon-clean"
+        created_at:
+          type: string
+          format: date-time
+          example: "2022-01-01T00:00:00Z"
+        updated_at:
+          type: string
+          format: date-time
+          example: "2022-01-01T00:00:00Z"
+
+    # schema para criar uma nova categoria
+    CreateCategoria:
+      type: object
+      properties:
+        designacao:
+          type: string
+          example: "Limpeza"
+        icone:
+          type: string
+          example: "icon-clean"
+      created_at:
+          type: string
+          format: date-time
+          example: "2022-01-01T00:00:00Z"
+      updated_at:
+          type: string
+          format: date-time
+          example: "2022-01-01T00:00:00Z" 
+
+    LoginCategoria:
+      type: object  
+      properties:
+        email:
+          type: string
+          example: "joao.silva@email.com"
+        password:
+          type: string
+          example: "password123"
+
+    categoriaResponseError:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Categoria not found"
+        status:
+          type: boolean
+          example: false
+        data:
+          type: object
+          properties:
+            null    
+
+    categoriaResponseSuccess:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Categoria created successfully"
+        status:
+          type: boolean
+          example: true
+        data:
+          type: object
+          $ref: '#/components/schemas/categoriaResponse'c

@@ -9,7 +9,7 @@ export enum EstadoProposta {
     PENDENTE = "PENDENTE",
     ACEITE = "ACEITE",
     CANCELADA = "CANCELADA"
-}   
+}
 
 export enum EstadoPrestacaoServico {
     PENDENTE = "pendente",
@@ -50,9 +50,11 @@ export interface servicotype {
 export interface PrestadorDBType {
     id: string,
     nif: string,
+    nome: string,
     precoHora: string,
     profissao: string,
     minimoDesconto: string,
+    minimoParaDesconto: string,
     taxaUrgencia: string,
     percentagemDesconto: string,
     disponivel: string,
@@ -86,7 +88,7 @@ export interface propostaDBType {
 export interface UserDBType {
     id: string,
     nome: string,
-    numero_identifica: string,
+    nome_identifica: string,
     data_nascimento: string,
     email: string,
     telefone: string,
@@ -192,7 +194,7 @@ export interface ServicoDetalhadoType {
     nome: string,
     descricao: string,
     designacao_categoria: string,
-    icone_categoria: string,    
+    icone_categoria: string,
     id_empresa: string,
     designacao_empresa: string,
     icone_empresa: string,
