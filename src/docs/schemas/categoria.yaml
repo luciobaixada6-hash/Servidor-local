@@ -82,4 +82,4 @@ componentes:
           example: true
         data:
           type: object
-          $ref: '#/components/schemas/categoriaResponse'c
+          $ref: '#/components/schemas/categoriaResponse'
