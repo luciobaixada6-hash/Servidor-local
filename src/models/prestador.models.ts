@@ -1,6 +1,6 @@
 import type { RowDataPacket } from "mysql2/promise"
 import db from "../lib/db.js"
-import type { PrestacaoServicoDetalhadoType,  PrestadorDBType} from "../utils/type.js"
+import type { PrestacaoServicoDetalhadoType,  PrestadorDBType, prestadorType, propostaDBType} from "../utils/type.js"
 import { generateUUID } from "../utils/uuid.js"
 
 
@@ -29,20 +29,7 @@ export const PrestadorModel = {
                     now
                 ]
             )
-            
-            return {
-                id,
-                nif: prestador.nif,
-                precoHora: prestador.precoHora,
-                profissao: prestador.profissao,
-                minimoDesconto: prestador.minimoDesconto,
-                taxaUrgencia: prestador.taxaUrgencia,
-                percentagemDesconto: prestador.percentagemDesconto,
-                disponivel: prestador.disponivel,
-                enabled: prestador.enabled,
-                create_at: now,
-                updated_at: now
-            }
+
         } catch (err) {
             console.log(err)
             return null
@@ -72,9 +59,9 @@ export const PrestadorModel = {
         }
     },
 
-    async update(id: string, prestador: PrestadorDBType): Promise<PrestadorDBType | null> {
+    async update(id: string, prestador: PrestadorDBType): Promise<PrestadorDBType[] | null> {
         try {
-            const now = new Date()
+            const [rows] = new Date()
             
             await db.execute(
                 `UPDATE tbl_prestadores 
@@ -102,23 +89,12 @@ export const PrestadorModel = {
                     id
                 ]
             )
-            
-            return {
-                id,
-                nif: prestador.nif,
-                precoHora: prestador.precoHora,
-                profissao: prestador.profissao,
-                minimoDesconto: prestador.minimoDesconto,
-                taxaUrgencia: prestador.taxaUrgencia,
-                percentagemDesconto: prestador.percentagemDesconto,
-                disponivel: prestador.disponivel,
-                enabled: prestador.enabled,
-                create_at: prestador.create_at,
-                updated_at: now
-            }
+
         } catch (err) {
+            return rows as PrestadorDBType[]
+        
             console.log(err)
-            return null
+            return null 
         }
     },
 

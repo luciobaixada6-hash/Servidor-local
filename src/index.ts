@@ -9,6 +9,9 @@ import { router as categoriaRouter } from "./routes/categoria.route.js";
 import { swaggerSpec } from "./docs/swagger.js"
 import swaggerUi from "swagger-ui-express"
 import dotenv  from "dotenv";
+import { ApolloServer } from "@apollo/server";
+import { typeDefs, resolvers } from "./graphql/index.js";
+import { expressMiddleware } from "@as-integrations/express5";
 
 
 
@@ -30,6 +33,22 @@ app.use("/empresa", empresaRouter)
 app.use("/categoria", categoriaRouter)
 
 app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec))
+
+const graphqlserver = new ApolloServer({
+    typeDefs,
+    resolvers,
+})
+
+await graphqlserver.start();
+
+app.use("/graphql", expressMiddleware(graphqlserver, {
+    context: async ({ req }) => ({
+        token: req.headers.authorization
+    }),
+}))
+
+
+
 
 app.get("/hello", (req: Request, res: Response) => {
     res.send("Hello World");
