@@ -12,15 +12,17 @@ export const PrestadorModel = {
             
             await db.execute(
                 `INSERT INTO tbl_prestadores 
-                (id, nif, precoHora, profissao, minimoDesconto, taxaUrgencia, percentagemDesconto, disponivel, enabled, create_at, updated_at)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+                (id, nif, nome, precoHora, profissao, minimoDesconto, minimoParaDesconto, taxaUrgencia, percentagemDesconto, disponivel, enabled, create_at, updated_at)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
 
                 [
                     id,
                     prestador.nif,
+                    prestador.nome,
                     prestador.precoHora,
                     prestador.profissao,
                     prestador.minimoDesconto,
+                    prestador.minimoParaDesconto,
                     prestador.taxaUrgencia,
                     prestador.percentagemDesconto,
                     prestador.disponivel,
@@ -29,6 +31,8 @@ export const PrestadorModel = {
                     now
                 ]
             )
+
+            return { ...prestador, id, create_at: now, updated_at: now }
 
         } catch (err) {
             console.log(err)
@@ -59,16 +63,18 @@ export const PrestadorModel = {
         }
     },
 
-    async update(id: string, prestador: PrestadorDBType): Promise<PrestadorDBType[] | null> {
+    async update(id: string, prestador: PrestadorDBType): Promise<PrestadorDBType | null> {
         try {
-            const [rows] = new Date()
+            const now = new Date()
             
             await db.execute(
                 `UPDATE tbl_prestadores 
                 SET nif = ?, 
+                nome = ?,
                 precoHora = ?, 
                 profissao = ?, 
                 minimoDesconto = ?, 
+                minimoParaDesconto = ?,
                 taxaUrgencia = ?, 
                 percentagemDesconto = ?, 
                 disponivel = ?,
@@ -78,9 +84,11 @@ export const PrestadorModel = {
 
                 [
                     prestador.nif,
+                    prestador.nome,
                     prestador.precoHora,
                     prestador.profissao,
                     prestador.minimoDesconto,
+                    prestador.minimoParaDesconto,
                     prestador.taxaUrgencia,
                     prestador.percentagemDesconto,
                     prestador.disponivel,
@@ -90,9 +98,8 @@ export const PrestadorModel = {
                 ]
             )
 
+            return { ...prestador, id, updated_at: now }
         } catch (err) {
-            return rows as PrestadorDBType[]
-        
             console.log(err)
             return null 
         }

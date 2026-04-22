@@ -3,7 +3,7 @@ import { PropostaModel } from "../../models/proposta.models.js";
 import type { propostaDBType } from "../../utils/type.js";
 
 
-export const propostaResolver ={
+export const PropostaResolver ={
     Query: {
         getAllpropostas: async () => {
             return await PropostaModel.getAll();

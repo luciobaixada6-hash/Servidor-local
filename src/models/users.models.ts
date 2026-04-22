@@ -13,7 +13,7 @@ export const UserModel = {
             const values = [
                 generateUUID(),
                 newUser.nome,
-                newUser.numero_identifica,
+                newUser.nome_identifica,
                 formatDateDDMMYYYY(newUser.data_nascimento),
                 newUser.email,
                 newUser.telefone,
@@ -103,7 +103,7 @@ export const UserModel = {
             const query = `UPDATE tbl_utilizadores SET nome=?, numero_identifica=?, data_nascimento=?, email=?, telefone=?, pais=?, localidade=?, password=?, enabled=?, update_at=? WHERE id=?`
             const values = [
                 updatedUser.nome,
-                updatedUser.numero_identifica,
+                updatedUser.nome_identifica,
                 formatDateDDMMYYYY(updatedUser.data_nascimento),
                 updatedUser.email,
                 updatedUser.telefone,

@@ -77,6 +77,62 @@ components:
           type: boolean
           example: true
 
+    getAllEmpresa:
+      type: object
+      properties:
+        id:
+          type: string  
+          example: "550e8400-e29b-41d4-a716-446655440000"
+        designacao:
+          type: string
+          example: "Empresa Exemplo Ltda"
+        descricao:
+          type: string
+        localizacao:
+          type: string
+          example: "Lisboa, Portugal"
+        nif:
+          type: string
+          example: "123456789"
+        icone:
+          type: string
+          example: "https://example.com/icone.png"
+
+
+    getEmpresaById:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "550e8400-e29b-41d4-a716-446655440000"
+        designacao:
+          type: string
+          example: "Empresa Exemplo Ltda"
+        descricao:
+          type: string
+        localizacao:
+          type: string
+          example: "Lisboa, Portugal"
+        nif:
+          type: string
+          example: "123456789"
+        icone:
+          type: string
+          example: "https://example.com/icone.png"
+
+    createEmpresa:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "550e8400-e29b-41d4-a716-446655440000"
+        designacao:
+          type: string
+          example: "Empresa Exemplo Ltda"
+        icone:
+          type: string
+          example: "https://example.com/icone.png"
+
     UpdateEmpresa:
       type: object
       properties:
@@ -101,3 +157,17 @@ components:
         enabled:
           type: boolean
           example: true
+
+    deleteEmpresa:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Empresa deleted successfully"
+        status:
+          type: boolean
+          example: true
+        data:
+          type: object
+          properties:
+            null

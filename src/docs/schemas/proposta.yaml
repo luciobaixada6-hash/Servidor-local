@@ -106,3 +106,12 @@ components:
           example: "Erro ao buscar proposta"
       required:
       - message
+      status:
+        type: string
+        example: "error"
+      data:
+        type: object
+        properties:
+          type: null
+
+

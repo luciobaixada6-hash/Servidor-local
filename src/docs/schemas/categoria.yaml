@@ -47,6 +47,58 @@ componentes:
           format: date-time
           example: "2022-01-01T00:00:00Z" 
 
+    getAllCategoria:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "uuid"
+        designacao:
+          type: string
+          example: "Limpeza"
+        icone:
+          type: string
+          example: "icon-clean"
+
+    getCategoriaById:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "uuid"
+        designacao:
+          type: string
+          example: "Limpeza"
+        icone:
+          type: string
+          example: "icon-clean"
+
+    createCategoria:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "uuid"
+        designacao:
+          type: string
+          example: "Limpeza"
+        icone:
+          type: string
+          example: "icon-clean"
+
+    updateCategoria:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "uuid"
+      designacao:
+          type: string
+          example: "Limpeza"
+      icone:
+          type: string
+          example: "icon-clean"
+
     LoginCategoria:
       type: object  
       properties:
@@ -83,3 +135,17 @@ componentes:
         data:
           type: object
           $ref: '#/components/schemas/categoriaResponse'
+
+    deleteCategoria:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Categoria deleted successfully"
+        status:
+          type: boolean
+          example: true
+        data:
+          type: object
+          properties:
+            null

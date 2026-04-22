@@ -46,7 +46,80 @@ components:
         enabled:
           type: boolean
           example: true
+        created_at:
+          type: string  
+          format: date-time
+          example: "2026-03-20T10:30:00Z"
+        updated_at:
+          type: string
+          format: date-time
+          example: "2026-03-26T14:15:00Z"
 
+    getAllorcamento:
+      type: object
+      properties: 
+        id:
+          type: integer
+          example: 1
+        total:
+          type: string
+          example: "5250.50"
+        id_utilizadores:
+          type: string
+          example: "550e8400-e29b-41d4-a716-446655440000"
+        enabled:
+          type: boolean
+          example: true
+
+    getorcamentoById:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        total:
+          type: string
+          example: "5250.50"
+        id_utilizadores:
+          type: string
+          example: "550e8400-e29b-41d4-a716-446655440000"
+        enabled:
+          type: boolean
+          example: true
+
+    createOrcamento:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        total:
+          type: string
+          example: "5250.50"
+        id_utilizadores:
+          type: string
+          example: "550e8400-e29b-41d4-a716-446655440000"
+        enabled:
+          type: boolean
+          example: true
+
+    updateOrcamento:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        total:
+          type: string
+          example: "5250.50"
+        designador:
+          type: string
+          example: "550e8400-e29b-41d4-a716-446655440000"
+        enabled:
+          type: boolean
+          example: true
+
+    # shema generico para sucesso 
     OrcamentouResponseSucess:
       type: object
       properties:
@@ -73,3 +146,17 @@ components:
         type: object
         properties:
           type: null
+
+deleteOrcamento:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Orcamento deletado com sucesso"
+        status:
+          type: string
+          example: "success"
+        data:
+          type: object
+          properties:
+            null
