@@ -43,7 +43,7 @@ export const typeDefs = gql`
     }
 
     type Utilizador {
-            id: String!,
+            id: ID!,
             nome: String!,
             nome_identifica: String!,
             data_nascimento: String!,
@@ -59,7 +59,7 @@ export const typeDefs = gql`
     }
 
     type Proposta {
-        id: String!,
+        id: ID!,
         id_prestacao_servico: String,
         preco_hora: Float,
         horas_estimadas: Float,
@@ -72,7 +72,7 @@ export const typeDefs = gql`
     }
 
     type PrestacaoServico {
-            id: String,
+            id: ID!,
             designacao: String
             subtotal: Float,
             horas_estimadas: Int,
@@ -91,7 +91,7 @@ export const typeDefs = gql`
     }
     
     type Categoria {
-        id: ID,
+        id: ID!,
         designacao: String,
         icone: String,
         created_at: String,
@@ -99,7 +99,7 @@ export const typeDefs = gql`
         }
 
     type Empresa {
-        id: String,
+        id: ID!,
         designacao: String,
         descricao: String,
         localizacao: String,
@@ -112,11 +112,13 @@ export const typeDefs = gql`
         }
 
         type Servico {
-            id: String,
+            id: ID!,
             nome: String,
             descricao: String,
             categoria: String,
             enabled: Boolean
+            created_at: String,
+            updated_at: String
         }
 
     type Orcamento {
@@ -130,7 +132,7 @@ export const typeDefs = gql`
 
     type Query {
         getAllUsers: [Utilizador],
-        getUsersById(id: ID!): Utilizador,
+        getUserById(id: ID!): Utilizador,
 
         getAllServico: [Servico],
         getServicoById(id:ID): Servico,

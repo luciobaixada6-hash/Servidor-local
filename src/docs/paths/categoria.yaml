@@ -1,5 +1,5 @@
 paths:
-  /categoria/:
+  /Categoria/:
     get:
       summary: Listar todas as categorias
       tags:
@@ -21,7 +21,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/ResponseError"
 
-  /categoria/create:
+  /Categoria/create:
     post:
       summary: Criar uma nova categoria
       tags:
@@ -47,13 +47,13 @@ paths:
               schema:
                 $ref: "#/components/schemas/ResponseError"
 
-    /categoria/get-by-id/{id}:
+  /Categoria/get-by-id/{id}:
     get:
       summary: Buscar uma categoria por ID 
-    tags:
-      - Categoria
-    description: Retorna uma categoria especifica pelo ID
-    parameters:
+      tags:
+        - Categoria
+      description: Retorna uma categoria especifica pelo ID
+      parameters:
         - name: id
           in: path
           required: true
@@ -61,22 +61,22 @@ paths:
           schema:
             type: string
             example: "uuid"
-    responses:
-      "200":
-        description: Categoria encontrada
-        content:
+      responses:
+        "200":
+          description: Categoria encontrada
+          content:
             application/json:
               schema:
                 $ref: "#/components/shemas/ResponseSuccess"
-      "404":
-      description: Categoria não encontrada
-      content:
-        application/json:
-          schema:
-            $ref: "#/components/schemas/ResponseError"
+        "404":
+          description: Categoria não encontrada
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseError"
 
 
-  /categoria/update/{id}:
+  /Categoria/update/{id}:
     put:
       summary: Atualizar uma categoria
       tags:
@@ -144,37 +144,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/ResponseError"
 
-      /categoria/login:
-    post:
-      summary: Login de um utilizador
-      tags:
-        - categoria
-      description: Realizar o login de um utilizador
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/Logincategoria"
-      responses:
-        "200":
-          description: "Login realizado com sucesso"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/UsersResponseSuccess"
-        "400":
-          description: "Dados invalidos"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/UsersResponseError"
-        "404":
-          description: "error ao logar utilizador"    
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/UsersResponseError"
+
 
 
 

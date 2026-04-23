@@ -10,7 +10,7 @@ export const CategoriaModel = {
             const now = new Date()
 
             await db.execute(
-                `INSERT INTO tbl_categorias
+                `INSERT INTO tbl_categoria
                 (id, designacao, icone, created_at, updated_at)
                 VALUES (?, ?, ?, ?, ?)`,
 

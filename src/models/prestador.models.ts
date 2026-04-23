@@ -11,7 +11,7 @@ export const PrestadorModel = {
             const now = new Date()
             
             await db.execute(
-                `INSERT INTO tbl_prestadores 
+                `INSERT INTO tbl_prestador
                 (id, nif, nome, precoHora, profissao, minimoDesconto, minimoParaDesconto, taxaUrgencia, percentagemDesconto, disponivel, enabled, create_at, updated_at)
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
 
@@ -41,7 +41,7 @@ export const PrestadorModel = {
     },
 
     async getAll(): Promise<PrestadorDBType[] | null> {
-        const [rows] = await db.execute<PrestadorDBType[] & RowDataPacket[]>("SELECT * FROM tbl_prestadores")
+        const [rows] = await db.execute<PrestadorDBType[] & RowDataPacket[]>("SELECT * FROM tbl_prestador")
 
         return Array.isArray(rows) ? rows as PrestadorDBType[] : null
     },
@@ -49,8 +49,8 @@ export const PrestadorModel = {
     async get(id: string): Promise<PrestadorDBType | null> {
         try {
             const [rows] = await db.execute<PrestadorDBType & RowDataPacket[]>(
-                `SELECT * FROM tbl_prestadores 
-                WHERE tbl_prestadores.id = ?`,
+                `SELECT * FROM tbl_prestador
+                WHERE tbl_prestador.id = ?`,
 
                 [id]
             )
@@ -68,7 +68,7 @@ export const PrestadorModel = {
             const now = new Date()
             
             await db.execute(
-                `UPDATE tbl_prestadores 
+                `UPDATE tbl_prestador
                 SET nif = ?, 
                 nome = ?,
                 precoHora = ?, 
@@ -108,7 +108,7 @@ export const PrestadorModel = {
     async delete(id: string): Promise<boolean | null> {
         try {
             const [result]: any = await db.execute(
-                `DELETE FROM tbl_prestadores 
+                `DELETE FROM tbl_prestador 
                 WHERE id = ?`,
 
                 [id]

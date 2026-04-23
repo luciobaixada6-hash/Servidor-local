@@ -79,38 +79,6 @@ paths:
               schema:
                 $ref: "#/components/schemas/ResponseError"
 
-  /empresa/login:
-    post:
-      summary: Login de um utilizador
-      tags:
-        - empresa
-      description: Realizar o login de um utilizador
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/Loginempresa"
-      responses:
-        "200":
-          description: "Login realizado com sucesso"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/empresaResponseSuccess"
-        "400":
-          description: "Dados invalidos"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/empresaResponseError"
-        "404":
-          description: "error ao logar utilizador"    
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/empresaResponseError"
-
   /empresa/update/{id}:
     put:
       summary: Atualizar empresa

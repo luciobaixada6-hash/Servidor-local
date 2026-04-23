@@ -77,7 +77,7 @@ export const UserModel = {
         try {
             const query = `SELECT * FROM tbl_utilizadores`
 
-            const rows = await db.execute(query);
+            const [rows] = await db.execute(query);
             return rows;
 
         } catch (error) {

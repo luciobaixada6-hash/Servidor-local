@@ -1,4 +1,5 @@
 import { EmpresaModel } from "../../models/empresa.models.js";
+import { PrestadorModel } from "../../models/prestador.models.js";
 import type { EmpresaDBType } from "../../utils/type.js";
 
 
@@ -24,6 +25,12 @@ export const EmpresaResolver ={
         deleteEmpresa: async (_:any, args: {id: string}) => {
             return await EmpresaModel.delete(args.id);
         }
-}
+},
 
+        // Relacionamento entre Proposta e Prestador e PrestacaoServico
+        Empresa: {
+            utilizadores: async (parent: { id_utilizadores: string }) => {
+                return await PrestadorModel.get(parent.id_utilizadores);
+            }
+}
 };

@@ -1,3 +1,4 @@
+import { PrestadorModel } from "../../models/prestador.models.js";
 import { serviceModel } from "../../models/servico.models.js";
 import type { serviceDBType } from "../../utils/type.js";
 
@@ -23,5 +24,12 @@ export const ServicoResolver = {
         deleteServico: async (_: any, args: { id: string }): Promise<boolean> => {
             return await serviceModel.delete(args.id);
         }
-    }
+    },
+            // Relacionamento entre Servico e Categoria
+            Servico: {
+                Categoria: async (parent: { Categoria: string }) => {
+                    return await PrestadorModel.get(parent.Categoria);
+                }
+
+}
 };
