@@ -129,21 +129,28 @@ export const typeDefs = gql`
     }
 
     type Query {
-        getUsers: [Utilizador]
-        getUser(id: ID!): Utilizador
-        getAllServices: [Servico]
-        getServiceById(id:ID): Servico
-        getAllPrestador: [Prestador]
-        getPrestadorById(id:ID): Prestador
-        getAllPrestacaoServico: [PrestacaoServico]
-        getPrestacaoServicoById(id:ID): PrestacaoServico
-        getAllPropostas: [Proposta]
-        getPropostaById(id:ID): Proposta
-        getAllCategoria: [Categoria]
-        getCategoriaById(id:ID): Categoria
-        getAllEmpresa: [Empresa]
-        getEmpresaById(id:ID!): Empresa
-        getAllOrcamento: [Orcamento]
+        getAllUsers: [Utilizador],
+        getUsersById(id: ID!): Utilizador,
+
+        getAllServico: [Servico],
+        getServicoById(id:ID): Servico,
+
+        getAllPrestador: [Prestador],
+        getPrestadorById(id:ID): Prestador,
+
+        getAllPrestacaoServico: [PrestacaoServico],
+        getPrestacaoServicoById(id:ID): PrestacaoServico,
+
+        getAllProposta: [Proposta],
+        getPropostaById(id:ID): Proposta,
+
+        getAllCategoria: [Categoria],
+        getCategoriaById(id:ID): Categoria,
+
+        getAllEmpresa: [Empresa],
+        getEmpresaById(id:ID!): Empresa,
+
+        getAllOrcamento: [Orcamento],
         getOrcamentoById(id:ID): Orcamento
 }
     type Mutation {

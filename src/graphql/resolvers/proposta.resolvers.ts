@@ -5,24 +5,24 @@ import type { propostaDBType } from "../../utils/type.js";
 
 export const PropostaResolver ={
     Query: {
-        getAllpropostas: async () => {
+        getAllProposta: async () => {
             return await PropostaModel.getAll();
         },
-        getpropostaById: async (_: any, args: {id: string}) => {
+        getPropostaById: async (_: any, args: {id: string}) => {
             return await PropostaModel.get(args.id);
         }        
     },
     
     Mutation:  {
-        createproposta: async (_:any, args: {id: string, proposta: propostaDBType}) => {
+        createProposta: async (_:any, args: {id: string, proposta: propostaDBType}) => {
             return await PropostaModel.create(args.proposta);
         },
 
-        updateproposta: async (_:any, args: {id: string, proposta: propostaDBType}) => {
+        updateProposta: async (_:any, args: {id: string, proposta: propostaDBType}) => {
             return await PropostaModel.update(args.id, args.proposta);
         },
 
-        deleteproposta: async (_:any, args: {id: string}) => {
+        deleteProposta: async (_:any, args: {id: string}) => {
             return await PropostaModel.delete(args.id);
         }
 }

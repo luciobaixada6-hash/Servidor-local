@@ -43,6 +43,7 @@ componentes:
         enabled:
           type: boolean
           example: true
+
     # schema para buscar servico detalhado
     ServicoDetalhado:
       type: object

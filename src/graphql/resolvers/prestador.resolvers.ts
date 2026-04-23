@@ -3,7 +3,7 @@ import type { PrestadorDBType } from "../../utils/type.js";
 
 export const PrestadorResolver ={
     Query: {
-        getAllPrestadors: async () => {
+        getAllPrestador: async () => {
             return await PrestadorModel.getAll();
         },
         getPrestadorById: async (_: any, args: {id: string}) => {

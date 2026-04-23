@@ -1,16 +1,13 @@
 import { serviceModel } from "../../models/servico.models.js";
-import type { serviceDBType, ServicoDetalhadoType } from "../../utils/type.js";
+import type { serviceDBType } from "../../utils/type.js";
 
 export const ServicoResolver = {
     Query: {
-        getAllServicos: async (): Promise<serviceDBType[] | null> => {
+        getAllServico: async (): Promise<serviceDBType[] | null> => {
             return await serviceModel.getAll();
         },
         getServicoById: async (_: any, args: { id: string }): Promise<serviceDBType | null> => {
             return await serviceModel.get(args.id);
-        },
-        getAllServicoDetalhado: async (_: any, args: { limit: number, offset: number }): Promise<ServicoDetalhadoType[] | null> => {
-            return await serviceModel.getAllServicoDetalhado(args.limit, args.offset);
         }
     },
 

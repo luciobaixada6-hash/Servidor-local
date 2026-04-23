@@ -1,14 +1,12 @@
-import { create } from "node:domain";
 import { UserModel } from "../../models/users.models.js";
 import type { UserDBType } from "../../utils/type.js";
-import { updateUser } from "../../users.js";
 
-export const UserResolver ={
+export const UsersResolver ={
     Query: {
         getAllUsers: async () => {
             return await UserModel.getAll();
         },
-        getUserById: async (_: any, args: {id: string}) => {
+        getUsersById: async (_: any, args: {id: string}) => {
             return await UserModel.get(args.id);
         }        
     },
