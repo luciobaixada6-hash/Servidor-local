@@ -68,7 +68,9 @@ export interface serviceDBType {
     nome: string,
     descricao: string,
     categoria: string,
-    enabled: boolean
+    enabled: boolean,
+    created_at: string,
+    updated_at: string
 }
 
 export interface propostaDBType {
@@ -230,4 +232,6 @@ export interface EmpresaDBType {
     created_at: Date,
     updated_at: Date
 }
+
+
 

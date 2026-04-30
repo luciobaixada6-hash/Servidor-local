@@ -28,6 +28,6 @@ router.put(propostaRoute.update, authorize([Role.ADMIN, Role.PRESTADOR, Role.EMP
 
 router.delete(propostaRoute.delete, authorize([Role.ADMIN, Role.PRESTADOR, Role.EMPRESA]), isOwner(PropostaModel, "owner"), PropostaController.delete) 
 
-router.put(propostaRoute.aceitar, authorize([Role.ADMIN, Role.CLIENTE, Role.PRESTADOR, Role.EMPRESA]), PropostaController.aceitar)
+router.put( propostaRoute.aceitar, authorize([Role.ADMIN, Role.CLIENTE, Role.PRESTADOR, Role.EMPRESA]), PropostaController.aceitar)
 
 export { router }

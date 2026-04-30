@@ -27,7 +27,7 @@ export const typeDefs = gql`
     }
 
     type Prestador {
-        id: ID,
+        id: ID!,
         nif: String,
         nome: String,
         precoHora: String,

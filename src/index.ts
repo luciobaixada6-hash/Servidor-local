@@ -1,3 +1,4 @@
+import "dotenv/config";
 import express, { type Request, type Response } from "express";
 import { router as serviceRouter } from "./routes/servico.route.js";
 import { router as usersRouter} from "./routes/users.route.js";
@@ -8,19 +9,19 @@ import { router as empresaRouter } from "./routes/empresa.route.js";
 import { router as categoriaRouter } from "./routes/categoria.route.js";
 import { swaggerSpec } from "./docs/swagger.js"
 import swaggerUi from "swagger-ui-express"
-import dotenv  from "dotenv";
 import { ApolloServer } from "@apollo/server";
 import { typeDefs, resolvers } from "./graphql/index.js";
 import { expressMiddleware } from "@as-integrations/express5";
-
+import cors from "cors";
 
 
 
 const app = express();
-
 app.use(express.json());
-
-dotenv.config();
+app.use(cors({
+    origin: "http://localhost:3000",
+    credentials: true,
+}));
 
 
 app.use("/service", serviceRouter)
@@ -43,7 +44,11 @@ await graphqlserver.start();
 
 app.use("/graphql", expressMiddleware(graphqlserver, {
     context: async ({ req }) => ({
-        token: req.headers.authorization
+        token: req.headers.authorization,
+        DB_HOST: process.env.DB_HOST,
+        DB_USER: process.env.DB_USER,
+        DB_PASSWORD: process.env.DB_PASSWORD,
+        DB_NAME: process.env.DB_NAME
     }),
 }))
 
