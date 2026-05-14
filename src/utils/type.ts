@@ -213,7 +213,7 @@ export interface ResponseType<T> {
 }
 
 export interface categoriaDBType {
-    id: string,
+    id: number,
     designacao: string,
     icone: string,
     created_at: Date,
